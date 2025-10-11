@@ -6,7 +6,6 @@ public class FSM : MonoBehaviour
     public enum State
     {
         menu,
-        VNphase,
         Gamephase,
         endGame
     }
@@ -42,13 +41,11 @@ public class FSM : MonoBehaviour
         switch (state)
         {
             case State.menu:
-                return State.VNphase;
-            case State.VNphase:
                 return State.Gamephase;
             case State.Gamephase:
                 return State.endGame;
             case State.endGame:
-                return State.endGame; // No further state
+                return State.menu; // No further state
             default:
                 return state;
         }
@@ -60,9 +57,6 @@ public class FSM : MonoBehaviour
         {
             case State.menu:
                 SceneManager.LoadScene("menu");
-                break;
-            case State.VNphase:
-                SceneManager.LoadScene("VNphase");
                 break;
             case State.Gamephase:
                 SceneManager.LoadScene("Gamephase");
