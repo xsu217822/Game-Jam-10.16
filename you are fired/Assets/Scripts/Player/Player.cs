@@ -98,4 +98,5 @@ public class Player : MonoBehaviour
     // 用于别的系统读取当前瞄准方向
     public Vector2 GetAimDir() => aimDir;
     public Vector3 GetAimWorldPos() => aimWorldPos;
+    public int CurrentHealth => currentHealth;
 }
