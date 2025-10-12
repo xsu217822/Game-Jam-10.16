@@ -6,18 +6,33 @@ public class FSM : MonoBehaviour
     public enum State
     {
         menu,
-        Gamephase,
-        endGame
+        Gamephase
     }
+
+    public static FSM Instance { get; private set; }
 
     [SerializeField]
     private State initialState = State.menu;
 
     public State CurrentState { get; private set; }
 
+    [SerializeField]
+    private string[] levelScenes = { "Level1", "Level2", "Level3", "Level4" };
+    private int currentLevelIndex = 0;
+
     private void Awake()
     {
-        // Only load the scene if it's not already loaded
+        // Singleton pattern ¡ª keep one FSM alive
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        // Ensure we start from correct state
         if (SceneManager.GetActiveScene().name != initialState.ToString())
         {
             LoadSceneForState(initialState);
@@ -25,14 +40,36 @@ public class FSM : MonoBehaviour
         CurrentState = initialState;
     }
 
-    // Call this from a button's OnClick event in the Inspector
     public void NextState()
     {
-        State nextState = GetNextState(CurrentState);
-        if (nextState != CurrentState)
+        if (CurrentState == State.Gamephase)
         {
-            CurrentState = nextState;
-            LoadSceneForState(CurrentState);
+            if (currentLevelIndex < levelScenes.Length - 1)
+            {
+                currentLevelIndex++;
+                LoadLevelScene(currentLevelIndex);
+            }
+            else
+            {
+                JumpToMenu();
+            }
+        }
+        else
+        {
+            State nextState = GetNextState(CurrentState);
+            if (nextState != CurrentState)
+            {
+                CurrentState = nextState;
+                if (nextState == State.Gamephase)
+                {
+                    currentLevelIndex = 0;
+                    LoadLevelScene(currentLevelIndex);
+                }
+                else
+                {
+                    LoadSceneForState(CurrentState);
+                }
+            }
         }
     }
 
@@ -43,9 +80,7 @@ public class FSM : MonoBehaviour
             case State.menu:
                 return State.Gamephase;
             case State.Gamephase:
-                return State.endGame;
-            case State.endGame:
-                return State.menu; // No further state
+                return State.menu;
             default:
                 return state;
         }
@@ -59,11 +94,36 @@ public class FSM : MonoBehaviour
                 SceneManager.LoadScene("menu");
                 break;
             case State.Gamephase:
-                SceneManager.LoadScene("Gamephase");
-                break;
-            case State.endGame:
-                SceneManager.LoadScene("endGame");
+                currentLevelIndex = 0;
+                LoadLevelScene(currentLevelIndex);
                 break;
         }
+    }
+
+    private void LoadLevelScene(int index)
+    {
+        if (index >= 0 && index < levelScenes.Length)
+        {
+            SceneManager.LoadScene(levelScenes[index]);
+        }
+    }
+
+    public int CurrentLevelIndex
+    {
+        get => currentLevelIndex;
+        set
+        {
+            if (value >= 0 && value < levelScenes.Length)
+            {
+                currentLevelIndex = value;
+                LoadLevelScene(currentLevelIndex);
+            }
+        }
+    }
+
+    public void JumpToMenu()
+    {
+        CurrentState = State.menu;
+        LoadSceneForState(CurrentState);
     }
 }
