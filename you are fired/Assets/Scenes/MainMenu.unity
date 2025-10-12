@@ -3410,20 +3410,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialState: 0
-  <CurrentState>k__BackingField: 0
   levelScenes:
-  - Level1-Work
-  - Level2-Home
-  - Level3-Hospital
-  - Level4-Company
-  currentLevelIndex: 0
-  menuAudio: {fileID: 8300000, guid: a34b2f330ac764b469e8aef646c9ef2b, type: 3}
-  levelAudios:
-  - {fileID: 8300000, guid: 1bffc724898acb4438bba8aec7d01fc6, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  audioSource: {fileID: 0}
+  - Level1
+  - Level2
+  - Level3
+  - Level4
+  menuAudio: {fileID: 0}
+  levelAudios: []
 --- !u!1 &1746425840
 GameObject:
   m_ObjectHideFlags: 0
