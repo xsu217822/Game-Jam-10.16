@@ -27,6 +27,9 @@ public class FSM : MonoBehaviour
 
     private void Awake()
     {
+        // Ensure FSM persists across scene changes
+        DontDestroyOnLoad(gameObject);
+
         audioSource = GetComponent<AudioSource>();
         if (!audioSource)
             audioSource = gameObject.AddComponent<AudioSource>();
