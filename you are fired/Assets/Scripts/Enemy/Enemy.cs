@@ -88,7 +88,7 @@ public class Enemy : MonoBehaviour
     void Die()
     {
         rb.linearVelocity = Vector2.zero;
-        if (animator) animator.SetTrigger("Die");
+        //if (animator) animator.SetTrigger("Die");
         Destroy(gameObject, 0.8f);
     }
 
