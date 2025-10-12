@@ -9,8 +9,6 @@ public class FSM : MonoBehaviour
         Gamephase
     }
 
-    public static FSM Instance { get; private set; }
-
     [SerializeField]
     private State initialState = State.menu;
 
@@ -18,26 +16,59 @@ public class FSM : MonoBehaviour
 
     [SerializeField]
     private string[] levelScenes = { "Level1", "Level2", "Level3", "Level4" };
-    private int currentLevelIndex = 0;
+    private int currentLevelIndex = 0;      
+
+    // Assign audio clips for each scene in the Inspector
+    [Header("Scene Audio Clips")]
+    [SerializeField] private AudioClip menuAudio;
+    [SerializeField] private AudioClip[] levelAudios; // Should match levelScenes length
+
+    private AudioSource audioSource;
 
     private void Awake()
     {
-        // Singleton pattern ¡ª keep one FSM alive
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        audioSource = GetComponent<AudioSource>();
+        if (!audioSource)
+            audioSource = gameObject.AddComponent<AudioSource>();
 
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        SceneManager.sceneLoaded += OnSceneLoaded;
 
-        // Ensure we start from correct state
         if (SceneManager.GetActiveScene().name != initialState.ToString())
         {
             LoadSceneForState(initialState);
         }
         CurrentState = initialState;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        PlaySceneAudio(scene.name);
+    }
+
+    private void PlaySceneAudio(string sceneName)
+    {
+        if (sceneName == "menu" && menuAudio != null)
+        {
+            audioSource.clip = menuAudio;
+            audioSource.Play();
+        }
+        else
+        {
+            for (int i = 0; i < levelScenes.Length; i++)
+            {
+                if (sceneName == levelScenes[i] && i < levelAudios.Length && levelAudios[i] != null)
+                {
+                    audioSource.clip = levelAudios[i];
+                    audioSource.Play();
+                    break;
+                }
+            }
+        }
     }
 
     public void NextState()
