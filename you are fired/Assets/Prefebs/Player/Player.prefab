@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 6346053934208720435}
   - component: {fileID: 4720795107268696920}
   - component: {fileID: 3985812888339868139}
-  - component: {fileID: 1902148137817140328}
+  - component: {fileID: 1935303043726270149}
+  - component: {fileID: 8607847050664135843}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -112,7 +113,56 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1902148137817140328
+--- !u!114 &1935303043726270149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 926784426375175805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a030409b5adfe25448684f283c6f1633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerName: Hero
+  maxHealth: 100
+  attackValue: 10
+  moveSpeed: 5
+  level: 1
+  exp: 0
+  expCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 1.0204082
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 50
+      value: 50
+      inSlope: 1.0204082
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  baseExpToLevel: 20
+  expScale: 10
+  weapon: {fileID: 0}
+  rb: {fileID: 0}
+  animator: {fileID: 0}
+  followCamera: {fileID: 0}
+  healthBar: {fileID: 0}
+--- !u!114 &8607847050664135843
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -101,7 +101,7 @@ public class Enemy : MonoBehaviour
             var player = other.GetComponent<Player>();
             if (player != null)
             {
-                player.TakeDamage(Mathf.RoundToInt(AttackValue));
+                //player.TakeDamage(Mathf.RoundToInt(AttackValue));
             }
 
             // 如果希望只造成一次伤害（而不是持续接触伤害），可以用Destroy自己
