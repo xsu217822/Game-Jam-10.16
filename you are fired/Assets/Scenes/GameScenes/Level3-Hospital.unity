@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!20 &357982430 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2696771396318328541, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
+  m_PrefabInstance: {fileID: 358925115621638247}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &358925115621638247
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -171,11 +176,110 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8607847050664135843, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
+    - {fileID: 1935303043726270149, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 926784426375175805, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 358925115621638249}
+    - targetCorrespondingSourceObject: {fileID: 926784426375175805, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 358925115621638250}
+    - targetCorrespondingSourceObject: {fileID: 926784426375175805, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 358925115621638253}
   m_SourcePrefab: {fileID: 100100000, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
+--- !u!1 &358925115621638248 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 926784426375175805, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
+  m_PrefabInstance: {fileID: 358925115621638247}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &358925115621638249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358925115621638248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a030409b5adfe25448684f283c6f1633, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  moveSpeed: 1
+  acceleration: 0
+  deceleration: 0
+  rb: {fileID: 358925115621638250}
+  animator: {fileID: 358925115621638252}
+  followCamera: {fileID: 357982430}
+  cameraDeadZone: {x: 0, y: 0}
+  cameraLerp: 0
+--- !u!50 &358925115621638250
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358925115621638248}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!95 &358925115621638252 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4720795107268696920, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
+  m_PrefabInstance: {fileID: 358925115621638247}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &358925115621638253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358925115621638248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 8b38183af4111a747a538f9aabd9f80f, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1001 &8183786742999112011
 PrefabInstance:
   m_ObjectHideFlags: 0
