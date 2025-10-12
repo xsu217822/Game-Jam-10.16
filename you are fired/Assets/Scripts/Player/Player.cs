@@ -5,10 +5,10 @@ using System;
 public class Player : MonoBehaviour
 {
     // ===== Fields (Data) =====
-    [Header("Identity")]
+    [Header("Name")]
     [SerializeField] private string playerName = "Hero";
 
-    [Header("Stats")]
+    [Header("Property")]
     [SerializeField] private int maxHealth = 100;
     [SerializeField] private int attackValue = 10;
     [SerializeField] private float moveSpeed = 5f;
