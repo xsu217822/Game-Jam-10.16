@@ -22,25 +22,25 @@ public class Player : MonoBehaviour
     [SerializeField] private int expScale = 10;
 
     [Header("Weapon")]
-    [SerializeField] private WeaponBase weapon; // ÍÏÒ»¸öÅÉÉú×Ô WeaponBase µÄ½Å±¾ÉÏÀ´
+    [SerializeField] private WeaponBase weapon; // ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ WeaponBase ï¿½Ä½Å±ï¿½ï¿½ï¿½ï¿½ï¿½
 
     // ===== Components =====
     [Header("Components")]
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private Animator animator;      // ¹ÒÔÚ Sprite µÄ Animator
-    [SerializeField] private Camera followCamera;    // ¿ÉÑ¡£¬ÈôÎª¿Õ¾Í²»´¦Àí
-    [SerializeField] private HealthBar healthBar;    // UI ÑªÌõ½Å±¾£¨¼ûÏÂ·½£©
+    [SerializeField] private Animator animator;      // ï¿½ï¿½ï¿½ï¿½ Sprite ï¿½ï¿½ Animator
+    [SerializeField] private Camera followCamera;    // ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½Îªï¿½Õ¾Í²ï¿½ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] private HealthBar healthBar;    // UI Ñªï¿½ï¿½ï¿½Å±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½ï¿½
 
     // ===== Runtime =====
     private Vector2 moveInput;
     private int currentHealth;
 
-    // ÊÂ¼þ£ºÊÜÉË¡¢ËÀÍö¡¢Éý¼¶£¨Íâ²¿ÏµÍ³¿É¶©ÔÄ£©
+    // ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â²¿ÏµÍ³ï¿½É¶ï¿½ï¿½Ä£ï¿½
     public event Action<int, int> OnHealthChanged; // (cur,max)
     public event Action OnDied;
     public event Action<int> OnLeveledUp;          // new level
 
-    // ===== Properties£¨Ö»¶Á±©Â¶£©=====
+    // ===== Propertiesï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½Â¶ï¿½ï¿½=====
     public string PlayerName => playerName;
     public int Level => level;
     public int Exp => exp;
@@ -54,16 +54,16 @@ public class Player : MonoBehaviour
         if (!animator) animator = GetComponentInChildren<Animator>();
         currentHealth = maxHealth;
 
-        // ³õÊ¼ UI
+        // ï¿½ï¿½Ê¼ UI
         HealthBarHandler();
     }
 
     void Start()
     {
-        // ¼òµ¥Ïà»ú¸úËæ£¨¿ÉÑ¡£©
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ£¨ï¿½ï¿½Ñ¡ï¿½ï¿½
         if (followCamera != null)
         {
-            // °ÑÏà»úµÄ z Áô¸ø¿ª·¢Õß×Ô¼º£ºÍ¨³£ -10
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ z ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ -10
             followCamera.transform.position = new Vector3(transform.position.x, transform.position.y, followCamera.transform.position.z);
         }
     }
@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
         PlayerMovement();
     }
 
-    // ===== Input System£¨Player Input °ó¶¨µ½ OnMove / OnFire£©=====
+    // ===== Input Systemï¿½ï¿½Player Input ï¿½ó¶¨µï¿½ OnMove / OnFireï¿½ï¿½=====
     public void OnMove(InputAction.CallbackContext ctx)
     {
         moveInput = ctx.ReadValue<Vector2>();
@@ -105,11 +105,11 @@ public class Player : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            // ËÀÍö
+            // ï¿½ï¿½ï¿½ï¿½
             animator.SetTrigger("Die");
             OnDied?.Invoke();
-            enabled = false;        // ÔÝÍ£¿ØÖÆ
-            rb.velocity = Vector2.zero;
+            enabled = false;        // ï¿½ï¿½Í£ï¿½ï¿½ï¿½ï¿½
+            rb.linearVelocity = Vector2.zero;
         }
         else
         {
@@ -127,18 +127,18 @@ public class Player : MonoBehaviour
 
     private void PlayerMovement()
     {
-        // ÎïÀíÒÆ¶¯£¨Top-Down£©
-        rb.velocity = moveInput.normalized * moveSpeed;
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½Top-Downï¿½ï¿½
+        rb.linearVelocity = moveInput.normalized * moveSpeed;
     }
 
     private void PlayerAnimation()
     {
-        // ¶¯»­²ÎÊý£ºSpeed¡¢MoveX¡¢MoveY£¨°´×Ô¼º Animator µÄ²ÎÊýÃû¸Ä£©
-        float speed = rb ? rb.velocity.magnitude : moveInput.magnitude * moveSpeed;
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Speedï¿½ï¿½MoveXï¿½ï¿½MoveYï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ Animator ï¿½Ä²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½
+        float speed = rb ? rb.linearVelocity.magnitude : moveInput.magnitude * moveSpeed;
         animator.SetFloat("Speed", speed);
         if (speed > 0.01f)
         {
-            Vector2 dir = rb && rb.velocity.sqrMagnitude > 0.0001f ? rb.velocity.normalized : moveInput.normalized;
+            Vector2 dir = rb && rb.linearVelocity.sqrMagnitude > 0.0001f ? rb.linearVelocity.normalized : moveInput.normalized;
             animator.SetFloat("MoveX", dir.x);
             animator.SetFloat("MoveY", dir.y);
         }
@@ -158,16 +158,16 @@ public class Player : MonoBehaviour
         {
             exp -= need;
             level++;
-            // Éý¼¶½±Àø£¨Ê¾Àý£©
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
             maxHealth += 5;
             attackValue += 1;
             moveSpeed += 0.1f;
 
-            currentHealth = maxHealth; // »ØÂú
+            currentHealth = maxHealth; // ï¿½ï¿½ï¿½ï¿½
             HealthBarHandler();
             OnLeveledUp?.Invoke(level);
 
-            // ÖØÐÂ¼ÆËãÏÂÒ»¶ÎÐèÇó
+            // ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             need = baseExpToLevel + Mathf.RoundToInt(expCurve.Evaluate(level) * expScale);
         }
     }
@@ -178,13 +178,13 @@ public class Player : MonoBehaviour
             healthBar.SetValue(currentHealth, maxHealth);
     }
 
-    // === ÓëÎäÆ÷½»»¥£ºÌá¹©³¯ÏòÓë¿ª»ðÔ­µã ===
+    // === ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½á¹©ï¿½ï¿½ï¿½ï¿½ï¿½ë¿ªï¿½ï¿½Ô­ï¿½ï¿½ ===
     public Vector2 GetAimDirection()
     {
-        // Êó±êÖ¸Ïò£¬»òÓÃÃæ³¯·½Ïò¡£Jam ¼ò»¯£ºÓÃÒÆ¶¯·½Ïòµ±³¯Ïò
+        // ï¿½ï¿½ï¿½Ö¸ï¿½ò£¬»ï¿½ï¿½ï¿½ï¿½æ³¯ï¿½ï¿½ï¿½ï¿½Jam ï¿½ò»¯£ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½òµ±³ï¿½ï¿½ï¿½
         if (moveInput.sqrMagnitude > 0.0001f) return moveInput.normalized;
 
-        // Êó±ê³¯Ïò£¨ÆÁÄ»¡úÊÀ½ç£©
+        // ï¿½ï¿½ê³¯ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½ï¿½ç£©
         if (Camera.main != null)
         {
             Vector3 mouse = Mouse.current != null
@@ -201,19 +201,19 @@ public class Player : MonoBehaviour
 
     public Vector3 GetMuzzleWorldPos()
     {
-        // Äã¿ÉÒÔÔÚ½ÇÉ«ÏÂ¹ÒÒ»¸ö¿ÕÎïÌå Muzzle£¬°ÑËüµÄ Transform ÍÏ½øÀ´;
-        // ÕâÀïÎª¼ò»¯£¬Ö±½ÓÓÃÍæ¼ÒÎ»ÖÃ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú½ï¿½É«ï¿½Â¹ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Muzzleï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Transform ï¿½Ï½ï¿½ï¿½ï¿½;
+        // ï¿½ï¿½ï¿½ï¿½Îªï¿½ò»¯£ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
         return transform.position + (Vector3)(GetAimDirection() * 0.3f);
     }
 }
 
-/* ================== Ö§³ÖÀà£¨·Ç±ØÐè£¬µ«¸øÄã¼´²å¼´ÓÃ£© ================== */
+/* ================== Ö§ï¿½ï¿½ï¿½à£¨ï¿½Ç±ï¿½ï¿½è£¬ï¿½ï¿½ï¿½ï¿½ï¿½ã¼´ï¿½å¼´ï¿½Ã£ï¿½ ================== */
 
-// ¼òµ¥ÑªÌõ£ºÊÀ½ç UI »òÆÁÄ» UI ¶¼¿ÉÓÃ
+// ï¿½ï¿½Ñªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ UI ï¿½ï¿½ï¿½ï¿½Ä» UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 [Serializable]
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] private UnityEngine.UI.Slider slider; // ÈôÓÃ Image ×öÌî³ä×Ô¼º¸Ä
+    [SerializeField] private UnityEngine.UI.Slider slider; // ï¿½ï¿½ï¿½ï¿½ Image ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½
     public void SetValue(int cur, int max)
     {
         if (!slider) return;
@@ -223,13 +223,13 @@ public class HealthBar : MonoBehaviour
     }
 }
 
-// ÎäÆ÷»ùÀà£¨ÔÚ Inspector ¸ø Player µÄ weapon Ö¸¶¨¾ßÌåÅÉÉúÀà£©
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à£¨ï¿½ï¿½ Inspector ï¿½ï¿½ Player ï¿½ï¿½ weapon Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à£©
 public abstract class WeaponBase : MonoBehaviour
 {
     public abstract void Fire(Player owner);
 }
 
-// Ò»¸ö¿ÉÖ±½Ó²âÊÔµÄ¼òµ¥ÎäÆ÷£º³¯Íæ¼Ò³¯Ïò·¢ÉäÒ»¿Å×Óµ¯
+// Ò»ï¿½ï¿½ï¿½ï¿½Ö±ï¿½Ó²ï¿½ï¿½ÔµÄ¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Óµï¿½
 class SimpleGun : WeaponBase
 {
     [SerializeField] private GameObject bulletPrefab;
@@ -248,6 +248,6 @@ class SimpleGun : WeaponBase
 
         var go = Instantiate(bulletPrefab, pos, Quaternion.identity);
         var rb = go.GetComponent<Rigidbody2D>();
-        if (rb) rb.velocity = dir * bulletSpeed;
+        if (rb) rb.linearVelocity = dir * bulletSpeed;
     }
 }

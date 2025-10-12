@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviour
 
     void EnemyMovement()
     {
-        rb.velocity = desiredDir * Speed;
+        rb.linearVelocity = desiredDir * Speed;
     }
 
     void Navigation()
@@ -78,16 +78,16 @@ public class Enemy : MonoBehaviour
 
     void EnemyAnimation()
     {
-        if (rb.velocity.x != 0)
-            sprite.flipX = rb.velocity.x < 0;
+        if (rb.linearVelocity.x != 0)
+            sprite.flipX = rb.linearVelocity.x < 0;
 
         if (animator)
-            animator.SetFloat("Speed", rb.velocity.magnitude);
+            animator.SetFloat("Speed", rb.linearVelocity.magnitude);
     }
 
     void Die()
     {
-        rb.velocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
         if (animator) animator.SetTrigger("Die");
         Destroy(gameObject, 0.8f);
     }
@@ -98,7 +98,11 @@ public class Enemy : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // 直接对玩家造成伤害
-            other.GetComponent<Health>()?.TakeDamage(AttackValue);
+            var player = other.GetComponent<Player>();
+            if (player != null)
+            {
+                player.TakeDamage(Mathf.RoundToInt(AttackValue));
+            }
 
             // 如果希望只造成一次伤害（而不是持续接触伤害），可以用Destroy自己
             // Destroy(gameObject); 
