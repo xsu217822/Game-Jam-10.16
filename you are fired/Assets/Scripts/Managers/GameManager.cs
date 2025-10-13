@@ -1,52 +1,63 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum GameFlowState { Boot, Menu, Playing, StageClear, GameOver, Ending }
+public enum GameState { MainMenu, Playing, Paused }
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Scene Names")]
     [SerializeField] private string mainMenuScene = "MainMenu";
-    [SerializeField] private string[] levelScenes = { "Level1", "Level2", "Level3", "Level4" };
+    [SerializeField] private string levelScene = "LevelScene"; // 唯一的游戏场景
 
-    private int currentLevel = -1;
-    public GameFlowState State { get; private set; } = GameFlowState.Boot;
+    public static GameManager I { get; private set; }
+    public GameState State { get; private set; } = GameState.MainMenu;
 
-    public void StartFromLevel(int index)
+    private void Awake()
     {
-        currentLevel = index;
-        LoadLevel(currentLevel);
+        if (I != null) { Destroy(gameObject); return; }
+        I = this;
+        DontDestroyOnLoad(gameObject);
+
+        // 若当前不在主菜单或关卡场景，就回主菜单
+        var cur = SceneManager.GetActiveScene().name;
+        if (cur != mainMenuScene && cur != levelScene)
+            LoadMainMenu();
     }
 
+    // ===== 场景控制 =====
     public void LoadMainMenu()
     {
-        State = GameFlowState.Menu;
+        State = GameState.MainMenu;
+        Time.timeScale = 1f;
         SceneManager.LoadScene(mainMenuScene);
     }
 
-    public void LoadLevel(int index)
+    public void StartGame() // 主菜单“开始”按钮调用这个
     {
-        if (index < 0 || index >= levelScenes.Length)
-        {
-            Debug.LogError("Invalid level index");
-            return;
-        }
-
-        State = GameFlowState.Playing;
-        SceneManager.LoadScene(levelScenes[index]);
+        State = GameState.Playing;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(levelScene);
+        // 进入 LevelScene 后，由 LevelDirector 自己按照 campaign 跑四关
     }
 
-    public void OnStageClear()
+    public void RestartGame() // 可选：从头再来
     {
-        currentLevel++;
-        if (currentLevel < levelScenes.Length)
-            LoadLevel(currentLevel);
-        else
-            LoadMainMenu(); // 理论上走不到；最终结局 UI 里会回主菜单
+        State = GameState.Playing;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(levelScene);
     }
 
-    public void OnGameOver()
+    public void Pause(bool pause)
     {
-        State = GameFlowState.GameOver;
-        SceneManager.LoadScene(mainMenuScene);
+        State = pause ? GameState.Paused : GameState.Playing;
+        Time.timeScale = pause ? 0f : 1f;
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 }

@@ -1,45 +1,63 @@
-using UnityEngine;
+// Assets/Scripts/SpawnManager.cs
 using System.Collections.Generic;
+using UnityEngine;
 
-public class SpawnManager : MonoBehaviour
+public class SpawnManager : MonoBehaviour, ISpawner
 {
-    private StageConfig cfg;
+    public event System.Action<int> OnKillExp;
+
+    private LevelConfig cfg;
+    private Transform player;
+    private readonly HashSet<LevelConfig.Wave> fired = new();
     private readonly List<Enemy> alive = new();
+    private float time;
 
-    public void Setup(StageConfig config)
+    public bool AllWavesDispatched => cfg == null || fired.Count >= (cfg.waves?.Length ?? 0);
+    public bool AllCleared => alive.Count == 0;
+
+    public void Init(LevelConfig c, Transform p)
     {
-        cfg = config;
-        alive.Clear();
-        // 可以在这里预热第一波，或在 Update 里按时间轴触发
-        //SpawnWave(0);
+        cfg = c; player = p;
+        fired.Clear(); alive.Clear(); time = 0f;
     }
 
-    //public void SpawnWave(int waveIndex)
-    //{
-    //    var wave = cfg.waves[waveIndex];
-    //    foreach (var item in wave.entries)
-    //    {
-    //        for (int i = 0; i < item.count; i++)
-    //        {
-    //            Vector3 pos = PickSpawnPoint(item.spawnArea);
-    //            var e = Instantiate(item.enemyPrefab, pos, Quaternion.identity);
-    //            alive.Add(e);
-    //            e.OnDied += () => alive.Remove(e);
-    //        }
-    //    }
-    //}
-
-    public bool AllObjectivesCleared()
+    public void Tick(float dt)
     {
-        // 也可以检查是否打完Boss/生存到达时长
-        return alive.Count == 0 && /*满足其他过关条件*/ true;
+        time += dt;
+        if (cfg?.waves == null) return;
+        foreach (var w in cfg.waves)
+        {
+            if (!fired.Contains(w) && time >= w.atTime)
+            {
+                FireWave(w);
+                fired.Add(w);
+            }
+        }
     }
 
-    private Vector3 PickSpawnPoint(Rect area)
+    private void FireWave(LevelConfig.Wave w)
     {
-        float x = Random.Range(area.xMin, area.xMax);
-        float y = Random.Range(area.yMin, area.yMax);
-        return new Vector3(x, y, 0);
+        if (w.entries == null) return;
+        foreach (var e in w.entries)
+        {
+            if (!e.enemy || !e.enemy.prefab) continue;
+            for (int i = 0; i < e.count; i++)
+            {
+                var pos = new Vector3(
+                    Random.Range(e.spawnRect.xMin, e.spawnRect.xMax),
+                    Random.Range(e.spawnRect.yMin, e.spawnRect.yMax), 0);
+
+                var go = Instantiate(e.enemy.prefab, pos, Quaternion.identity);
+                var en = go.GetComponent<Enemy>() ?? go.AddComponent<Enemy>();
+                en.Init(e.enemy, player);
+                en.OnDied += dead =>
+                {
+                    alive.Remove(dead);
+                    OnKillExp?.Invoke(e.enemy.expOnDie);
+                };
+                alive.Add(en);
+            }
+        }
     }
 }
 
