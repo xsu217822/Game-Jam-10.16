@@ -1,4 +1,4 @@
-// Assets/Scripts/Configs/LevelConfig.cs
+// Assets/Scripts/LevelConfig.cs
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Game/Level Config (All-in-One)")]
@@ -8,7 +8,7 @@ public class LevelConfig : ScriptableObject
     public string displayName;
     public bool isFinalStage;
 
-    [Header("视觉（不用Tilemap，纯Sprite生成）")]
+    [Header("视觉（纯Sprite，不用Tilemap）")]
     public Sprite floorSprite;
     public Sprite wallSprite;
     public Sprite cornerAny;
@@ -28,16 +28,17 @@ public class LevelConfig : ScriptableObject
     [System.Serializable] public class WaveEntry { public EnemyData enemy; public int count = 5; public Rect spawnRect; }
 
     [Header("经验与小构筑触发")]
-    public int[] xpThresholds = new int[] { 10, 25, 45, 70 }; // 达到即弹小构筑
-    public MicroModData[] microPool;      // 小构筑池（围绕装备加成）
-    public GameObject microBuildUIPrefab; // 小构筑“多选一”UI（用 ChoiceUI）
+    public int[] xpThresholds = new int[] { 10, 25, 45, 70 };
+    public MicroModData[] microPool;
+    public GameObject microBuildUIPrefab;
 
-    [Header("核心构筑（关卡开始触发：选装备）")]
-    public WeaponData[] coreEquipPool;    // 可选装备池
-    public GameObject coreBuildUIPrefab;  // 核心构筑 UI（用 ChoiceUI）
+    [Header("核心构筑（关卡开始选装备）")]
+    public WeaponData[] coreEquipPool;
+    public GameObject coreBuildUIPrefab;
 
     [Header("剧情（UI或Timeline预制）")]
-    public GameObject[] introCutscenes;   // 关前剧情
-    public GameObject[] outroCutscenes;   // 通关剧情
-    public GameObject[] failCutscenes;    // 失败剧情
+    public GameObject[] introCutscenes;
+    public GameObject[] outroCutscenes;
+    public GameObject[] failCutscenes;
 }
+

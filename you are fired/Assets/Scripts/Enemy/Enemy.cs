@@ -1,30 +1,27 @@
-﻿using UnityEngine;
+﻿// Assets/Scripts/Enemy.cs
 using System;
+using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public event Action OnDied;
+    public event Action<Enemy> OnDied;
     private int hp;
     private float speed;
+    private int exp;
     private Transform target;
 
-    public void ApplyData(EnemyData d)
+    public void Init(EnemyData d, Transform player)
     {
-        hp = d ? d.maxHealth : 10;
-        speed = d ? d.moveSpeed : 2f;
-        target = FindObjectOfType<Player>()?.transform;
+        hp = d.maxHealth; speed = d.moveSpeed; exp = d.expOnDie; target = player;
     }
 
     private void Update()
     {
         if (!target) return;
         var dir = (target.position - transform.position).normalized;
-        transform.position += (Vector3)(dir * speed * Time.deltaTime);
+        transform.position += dir * speed * Time.deltaTime;
     }
 
-    public void TakeDamage(int dmg)
-    {
-        hp -= Mathf.Max(0, dmg);
-        if (hp <= 0) { OnDied?.Invoke(); Destroy(gameObject); }
-    }
+    public int KillAndGetExp() { OnDied?.Invoke(this); Destroy(gameObject); return exp; }
+    public void TakeDamage(int dmg) { hp -= Mathf.Max(0, dmg); if (hp <= 0) KillAndGetExp(); }
 }
