@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Cleaver : WeaponBase
+public class Scalpel : WeaponBase
 {
     [Header("Scalpel Settings")]
     public float stabDistance = 1f;   // ´Ì»÷¾àÀë
@@ -43,3 +43,4 @@ public class Cleaver : WeaponBase
         }
     }
 }
+

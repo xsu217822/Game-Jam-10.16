@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Cleaver : WeaponBase
+public class Sword : WeaponBase
 {
-    [Header("Scalpel Settings")]
+    [Header("Sword Settings")]
     public float stabDistance = 1f;   // ´Ì»÷¾àÀë
     public LayerMask hitMask;
 
@@ -39,7 +39,7 @@ public class Cleaver : WeaponBase
                 target.TakeDamage(baseDamage);
             }
 
-            Debug.Log($"[Scalpel] stabbed {hit.collider.name} for {baseDamage} damage");
+            Debug.Log($"[Sword] stabbed {hit.collider.name} for {baseDamage} damage");
         }
     }
 }
