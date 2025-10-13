@@ -17,6 +17,17 @@ public class ResolutionSettings : MonoBehaviour
     private Resolution[] resolutions;
     private int currentResolutionIndex = 0;
 
+    void Awake()
+    {
+        // 保证只存在一个 ResolutionSettings 实例
+        if (FindObjectsOfType<ResolutionSettings>().Length > 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+
     void Start()
     {
         // --- 初始化分辨率 ---
