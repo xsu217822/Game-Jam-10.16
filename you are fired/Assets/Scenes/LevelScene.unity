@@ -854,6 +854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenu: {fileID: 1152212748}
+  audioManager: {fileID: 0}
 --- !u!4 &1614495673
 Transform:
   m_ObjectHideFlags: 0
@@ -1032,7 +1033,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 8607847050664135843, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
+    - {fileID: 0}
     - {fileID: 1935303043726270149, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1046,6 +1047,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 926784426375175805, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
       insertIndex: -1
       addedObject: {fileID: 358925115621638253}
+    - targetCorrespondingSourceObject: {fileID: 926784426375175805, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 358925115621638256}
     - targetCorrespondingSourceObject: {fileID: 8375562910558495178, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
       insertIndex: 3
       addedObject: {fileID: 1020871472}
@@ -1133,6 +1137,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6346053934208720435, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
   m_PrefabInstance: {fileID: 358925115621638247}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &358925115621638256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 358925115621638248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a1dfe5a0cf83f049a0fa8d2ca8640a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
