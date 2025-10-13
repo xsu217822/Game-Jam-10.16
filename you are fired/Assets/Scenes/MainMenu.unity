@@ -2608,7 +2608,7 @@ GameObject:
   - component: {fileID: 1414041329}
   - component: {fileID: 1414041328}
   m_Layer: 0
-  m_Name: optionmanager
+  m_Name: OptionManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3365,58 +3365,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1715481685}
   m_CullTransparentMesh: 1
---- !u!1 &1727197585
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1727197586}
-  - component: {fileID: 1727197587}
-  m_Layer: 0
-  m_Name: FSM
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1727197586
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1727197585}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 905.9326, y: 479.60544, z: -13.486295}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1727197587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1727197585}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 888a6bd1d5f2d04418ba7a878b89253e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initialState: 0
-  levelScenes:
-  - Level1
-  - Level2
-  - Level3
-  - Level4
-  menuAudio: {fileID: 0}
-  levelAudios: []
 --- !u!1 &1746425840
 GameObject:
   m_ObjectHideFlags: 0
@@ -4703,7 +4651,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1727197587}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: FSM, Assembly-CSharp
         m_MethodName: NextState
         m_Mode: 1
@@ -4761,5 +4709,4 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 1447862395}
   - {fileID: 956184923}
-  - {fileID: 1727197586}
   - {fileID: 1414041329}
