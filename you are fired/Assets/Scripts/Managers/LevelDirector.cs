@@ -14,7 +14,7 @@ public class LevelDirector : MonoBehaviour
     [SerializeField] private MonoBehaviour buildSvcObj;      // BuildManager
 
     [Header("通关/失败后的去向")]
-    [SerializeField] private bool returnToMenuOnEnd = true;  // 结局/失败后回主菜单
+    [SerializeField] private bool returnToMenuOnEnd = false;  // 结局/失败后回主菜单
 
     // 接口引用（只依赖接口，不依赖具体类）
     private ICutsceneService cutscene;

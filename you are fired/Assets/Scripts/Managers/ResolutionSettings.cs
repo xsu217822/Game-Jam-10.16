@@ -44,7 +44,7 @@ public class ResolutionSettings : MonoBehaviour
         fullscreenToggle.isOn = Screen.fullScreen;
 
         // --- 初始化音量 ---
-        float savedVolume = PlayerPrefs.GetFloat("volume", 0.75f);
+        float savedVolume = PlayerPrefs.GetFloat("Volume", 0.75f);
         volumeSlider.value = savedVolume;
         SetVolume(savedVolume);
 
@@ -68,8 +68,8 @@ public class ResolutionSettings : MonoBehaviour
 
     public void SetVolume(float value)
     {
-        // 将滑条值（0~1）转换为分贝 (-80 ~ 0dB)
-        float volumeInDb = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1)) * 20f;
+        // 将滑条值（0~1）转换为分贝 (-80 ~ 20dB)
+        float volumeInDb = Mathf.Lerp(-80f, 20f, Mathf.Clamp01(value));
         audioMixer.SetFloat("MasterVolume", volumeInDb);
         PlayerPrefs.SetFloat("volume", value);
     }
