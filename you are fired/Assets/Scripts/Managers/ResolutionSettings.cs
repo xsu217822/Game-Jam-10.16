@@ -19,12 +19,6 @@ public class ResolutionSettings : MonoBehaviour
 
     void Awake()
     {
-        // 保证只存在一个 ResolutionSettings 实例
-        if (FindObjectsOfType<ResolutionSettings>().Length > 1)
-        {
-            Destroy(gameObject);
-            return;
-        }
         DontDestroyOnLoad(gameObject);
     }
 
