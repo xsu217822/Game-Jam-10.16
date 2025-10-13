@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("�ƶ�����")]
+    [Header("移动参数")]
     public float moveSpeed = 5f;
 
     private Rigidbody2D rb;
@@ -16,10 +16,10 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-        rb.gravityScale = 0f; // ��������������ͼ��Ϸ��
+        rb.gravityScale = 0f;
+        rb.freezeRotation = true;
     }
 
-    // InputSystem ����
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
@@ -27,23 +27,17 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = moveInput * moveSpeed;
+        rb.linearVelocity = moveInput.normalized * moveSpeed;
     }
 
     private void Update()
     {
-        UpdateAnimation();
-    }
+        // 检查是否有任何方向输入
+        bool isMoving = moveInput.sqrMagnitude > 0.01f;
 
-    private void UpdateAnimation()
-    {
-        // �����ٶȲ���
-        anim.SetFloat("velocityX", Mathf.Abs(rb.linearVelocity.x));
-        anim.SetFloat("velocityY", Mathf.Abs(rb.linearVelocity.y));
-
-        // �����ƶ�״̬��Idle ? Walk��
-        bool isMoving = rb.linearVelocity.sqrMagnitude > 0.01f;
-        anim.SetBool("isMoving", isMoving);
+        // 更新动画参数
+        anim.SetBool("isMove", isMoving);
+        anim.SetFloat("velocityX", moveInput.x);
+        anim.SetFloat("velocityY", moveInput.y);
     }
 }
-
