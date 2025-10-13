@@ -42,4 +42,9 @@ public class Cleaver : WeaponBase
             Debug.Log($"[Scalpel] stabbed {hit.collider.name} for {baseDamage} damage");
         }
     }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + transform.right * stabDistance);
+    }
 }
