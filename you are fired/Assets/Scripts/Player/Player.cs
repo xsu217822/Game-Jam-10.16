@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
     // Camera follow (optional)
     [SerializeField] private Vector2 cameraDeadZone = Vector2.zero;
     [SerializeField] private float cameraLerp = 0f;
+    [SerializeField] private Canvas canvas;
 
     // Events
     public event System.Action<int, int> OnHealthChanged;
@@ -60,6 +61,16 @@ public class Player : MonoBehaviour
 
             Vector2 dir = (aimWorldPos - transform.position);
             aimDir = dir.sqrMagnitude > 0.001f ? dir.normalized : Vector2.right;
+        }
+
+        // 检查 Escape 键是否被按下
+        if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            var cameraControl = followCamera.GetComponent<cameraControl>();
+            if (cameraControl != null)
+            {
+                cameraControl.SetCameraToCanvas(canvas);
+            }
         }
 
         // 动画可选
