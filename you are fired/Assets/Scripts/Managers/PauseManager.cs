@@ -1,10 +1,19 @@
+using MyGame.Managers;
 using UnityEngine;
+// Add the following using directive if AudioManager is in a different namespace
+// using YourNamespace; // <-- Replace 'YourNamespace' with the actual namespace of AudioManager
 
 public class pausemanager : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenu;
 
     private bool isPaused = false;
+    public AudioManager audioManager;
+
+    void Start()
+    {
+        audioManager = FindObjectOfType<AudioManager>();
+    }
 
     void Update()
     {
@@ -24,6 +33,8 @@ public class pausemanager : MonoBehaviour
         Time.timeScale = 0f;
         if (pauseMenu != null)
             pauseMenu.SetActive(true);
+        if (audioManager != null)
+            audioManager.PauseBGM();
     }
 
     public void ResumeGame()
@@ -32,5 +43,7 @@ public class pausemanager : MonoBehaviour
         Time.timeScale = 1f;
         if (pauseMenu != null)
             pauseMenu.SetActive(false);
+        if (audioManager != null)
+            audioManager.ResumeBGM();
     }
 }
