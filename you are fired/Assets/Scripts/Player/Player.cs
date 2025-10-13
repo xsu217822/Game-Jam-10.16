@@ -18,6 +18,6 @@ public class Player : MonoBehaviour
     }
 
     public void OnMove(InputValue v) => move = v.Get<Vector2>();
-    private void FixedUpdate() { if (!IsDead) rb.velocity = move.normalized * MoveSpeed; }
+    private void FixedUpdate() { if (!IsDead) rb.linearVelocity = move.normalized * MoveSpeed; }
     public void TakeDamage(int dmg) { HP = Mathf.Max(0, HP - Mathf.Max(0, dmg)); }
 }

@@ -7,14 +7,10 @@ public class GameManager : MonoBehaviour
 {
     [Header("Scene Names")]
     [SerializeField] private string mainMenuScene = "MainMenu";
-    [SerializeField] private string levelScene = "LevelScene"; // 一个场景跑所有关
-
-    [Header("Levels")]
-    [SerializeField] private LevelConfigDatabase levelDB; // 拖入包含四关Config的SO
+    [SerializeField] private string levelScene = "LevelScene"; // 唯一的游戏场景
 
     public static GameManager I { get; private set; }
     public GameState State { get; private set; } = GameState.MainMenu;
-    public int CurrentLevelIndex { get; private set; } = 0; // 0..3
 
     private void Awake()
     {
@@ -22,15 +18,13 @@ public class GameManager : MonoBehaviour
         I = this;
         DontDestroyOnLoad(gameObject);
 
-        // 如果Boot直接用这个脚本启动，也可以在这里自动进主菜单：
-        if (SceneManager.GetActiveScene().name != mainMenuScene &&
-            SceneManager.GetActiveScene().name != levelScene)
-        {
+        // 若当前不在主菜单或关卡场景，就回主菜单
+        var cur = SceneManager.GetActiveScene().name;
+        if (cur != mainMenuScene && cur != levelScene)
             LoadMainMenu();
-        }
     }
 
-    // === Public API ===
+    // ===== 场景控制 =====
     public void LoadMainMenu()
     {
         State = GameState.MainMenu;
@@ -38,31 +32,19 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(mainMenuScene);
     }
 
-    public void StartGameAt(int levelIndex)
+    public void StartGame() // 主菜单“开始”按钮调用这个
     {
-        if (levelDB == null || levelDB.levels == null || levelDB.levels.Length == 0)
-        {
-            Debug.LogError("GameManager: LevelConfigDatabase 未设置或为空。");
-            return;
-        }
-
-        CurrentLevelIndex = Mathf.Clamp(levelIndex, 0, levelDB.levels.Length - 1);
         State = GameState.Playing;
+        Time.timeScale = 1f;
         SceneManager.LoadScene(levelScene);
+        // 进入 LevelScene 后，由 LevelDirector 自己按照 campaign 跑四关
     }
 
-    public void NextLevelOrMenu()
+    public void RestartGame() // 可选：从头再来
     {
-        CurrentLevelIndex++;
-        if (levelDB != null && CurrentLevelIndex < levelDB.levels.Length)
-        {
-            State = GameState.Playing;
-            SceneManager.LoadScene(levelScene);
-        }
-        else
-        {
-            LoadMainMenu();
-        }
+        State = GameState.Playing;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(levelScene);
     }
 
     public void Pause(bool pause)
@@ -71,11 +53,11 @@ public class GameManager : MonoBehaviour
         Time.timeScale = pause ? 0f : 1f;
     }
 
-    public LevelConfig GetCurrentLevelConfig()
+    public void Quit()
     {
-        if (levelDB == null || levelDB.levels == null || levelDB.levels.Length == 0)
-            return null;
-        int idx = Mathf.Clamp(CurrentLevelIndex, 0, levelDB.levels.Length - 1);
-        return levelDB.levels[idx];
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
 }

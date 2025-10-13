@@ -4653,8 +4653,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1133386070314888935, guid: f25ed2f3605239b4682df9b2dd8bb28b, type: 3}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: StartGameAt
-        m_Mode: 3
+        m_MethodName: StartGame
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
