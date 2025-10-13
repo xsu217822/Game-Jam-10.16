@@ -28,7 +28,7 @@ public class PenWeapon : WeaponBase
 
         // 判定近战攻击
         Vector2 origin = transform.position;
-        Vector2 direction = transform.right; // 假设角色右方为前方
+        Vector2 direction = transform.right;
 
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, stabDistance, hitMask);
         if (hit.collider != null)
