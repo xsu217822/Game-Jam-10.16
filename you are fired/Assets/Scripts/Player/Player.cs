@@ -10,6 +10,30 @@ public class Player : MonoBehaviour
     public bool IsDead => HP <= 0;
     private Vector2 move;
 
+    // 新增经验值和等级字段
+    public int Exp { get; private set; } = 0;
+    public int Level { get; private set; } = 1;
+
+    // 新增经验值累加方法
+    public void AddExp(int amount)
+    {
+        Exp += Mathf.Max(0, amount);
+        // 每100经验值升一级
+        while (Exp >= Level * 100)
+        {
+            Exp -= Level * 100;
+            LevelUp();
+        }
+    }
+
+    // 新增升级方法
+    private void LevelUp()
+    {
+        Level++;
+        // 可在此处添加升级时的属性提升或特效
+        Debug.Log($"玩家升级到 {Level} 级！");
+    }
+
     public void ApplyBase(int hp, float speed)
     {
         if (!rb) rb = GetComponent<Rigidbody2D>() ?? gameObject.AddComponent<Rigidbody2D>();
