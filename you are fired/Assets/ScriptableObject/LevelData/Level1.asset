@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: 
   isFinalStage: 0
-  floorSprite: {fileID: 0}
-  wallSprite: {fileID: 0}
+  floorSprite: {fileID: 21300000, guid: 71da620223410be42a6a91f2ebf7f37c, type: 3}
+  wallSprite: {fileID: 2171119254634191944, guid: fac4e23a61ac98f4b994efeda263c76a, type: 3}
   cornerAny: {fileID: 0}
   cornerTopLeft: {fileID: 0}
   cornerTopRight: {fileID: 0}
@@ -29,8 +29,19 @@ MonoBehaviour:
   sortingLayer: Default
   floorOrder: 0
   wallOrder: 1
-  enemyTypes: []
-  waves: []
+  enemyTypes:
+  - {fileID: 11400000, guid: daea0853ae0d5784bb2e36be3cc3adfa, type: 2}
+  waves:
+  - atTime: 0
+    entries:
+    - enemy: {fileID: 11400000, guid: daea0853ae0d5784bb2e36be3cc3adfa, type: 2}
+      count: 10
+      spawnRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 50
+        height: 50
   xpThresholds: 0a000000190000002d00000046000000
   microPool: []
   microBuildUIPrefab: {fileID: 0}
