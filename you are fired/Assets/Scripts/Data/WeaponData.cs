@@ -1,4 +1,6 @@
 // Assets/Scripts/WeaponData.cs
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public interface IEquipment { void BindOwner(Player p); }
