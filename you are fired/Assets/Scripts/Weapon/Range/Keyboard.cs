@@ -16,14 +16,18 @@ public class KeyboardWeapon : WeaponBase
 
     public override void Attack()
     {
-        if (Time.time < lastAttackTime + GetAttackInterval()) return;
+        if (Time.time < lastAttackTime + GetAttackInterval())
+        {
+
+            return;
+        }
         lastAttackTime = Time.time;
 
-        // ����+��Ч
+        // 播放动画和音效
         animator?.SetTrigger("Attack");
         audioSource?.Play();
 
-        // �����ӵ�
+        // 发射子弹
         if (bulletPrefab && firePoint)
         {
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
