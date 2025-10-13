@@ -6,6 +6,8 @@ public class StageManager : MonoBehaviour
 
     private bool endingShown = false;
     private Player player;
+    [SerializeField] private GameObject pauseMenuUI; // 指向你的暂停菜单UI
+    private bool isPaused = false;
 
     private void Start()
     {
@@ -35,6 +37,13 @@ public class StageManager : MonoBehaviour
             {
                 GoNextLevel();
             }
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (isPaused)
+                ResumeGame();
+            else
+                PauseGame();
         }
     }
 
@@ -69,5 +78,22 @@ public class StageManager : MonoBehaviour
         // 例子：打死 Boss / 存活到计时 / 清空存活敌人
         // return Services.Spawn.AllObjectivesCleared();
         return false;
+    }
+    public void PauseGame()
+    {
+        pauseMenuUI.SetActive(true);   // 显示暂停菜单
+        Time.timeScale = 0f;           // 暂停游戏
+        isPaused = true;
+        Cursor.lockState = CursorLockMode.None; // 解锁鼠标（如果你锁定过）
+        Cursor.visible = true;
+    }
+
+    public void ResumeGame()
+    {
+        pauseMenuUI.SetActive(false);  // 关闭暂停菜单
+        Time.timeScale = 1f;           // 恢复游戏
+        isPaused = false;
+        Cursor.lockState = CursorLockMode.Locked; // 重新锁定鼠标（按需）
+        Cursor.visible = false;
     }
 }
