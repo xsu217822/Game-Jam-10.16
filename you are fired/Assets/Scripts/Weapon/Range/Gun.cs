@@ -3,7 +3,7 @@ using UnityEngine;
 public class Gun : WeaponBase
 {
     [Header("Ranged Settings")]
-    public GameObject GunPrefab;
+    public GameObject bulletPrefab;
     public Transform firePoint;
     public float bulletSpeed = 10f;
 
@@ -28,9 +28,9 @@ public class Gun : WeaponBase
         audioSource?.Play();
 
         // ·¢Éä×Óµ¯
-        if (GunPrefab && firePoint)
+        if (bulletPrefab && firePoint)
         {
-            GameObject bullet = Instantiate(GunPrefab, firePoint.position, firePoint.rotation);
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             rb.linearVelocity = firePoint.right * bulletSpeed;
         }
