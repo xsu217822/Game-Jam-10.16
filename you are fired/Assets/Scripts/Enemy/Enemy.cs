@@ -1,111 +1,30 @@
 ﻿using UnityEngine;
+using System;
 
-public enum AttackWay { Melee, Ranged, None }
-
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(Collider2D))]
 public class Enemy : MonoBehaviour
 {
-    [Header("Fields")]
-    public string Name = "Enemy";
-    public float Health = 30f;
-    public float Speed = 2f;
-    public float AttackValue = 10f;
-    public AttackWay AttackWay = AttackWay.Melee;
+    public event Action OnDied;
+    private int hp;
+    private float speed;
+    private Transform target;
 
-    [Header("Target")]
-    public Transform target;
-    public float stopDistance = 1.2f;
-
-    private SpriteRenderer sprite;
-    private Animator animator;
-    private Rigidbody2D rb;
-    private Vector2 desiredDir;
-
-    void Awake()
+    public void ApplyData(EnemyData d)
     {
-        sprite = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
-        rb.gravityScale = 0;
-        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-
-        // 自动寻找玩家
-        if (!target)
-        {
-            GameObject p = GameObject.FindGameObjectWithTag("Player");
-            if (p) target = p.transform;
-        }
+        hp = d ? d.maxHealth : 10;
+        speed = d ? d.moveSpeed : 2f;
+        target = FindObjectOfType<Player>()?.transform;
     }
 
-    void Update()
+    private void Update()
     {
-        Navigation();
-        EnemyMovement();
-        EnemyAnimation();
+        if (!target) return;
+        var dir = (target.position - transform.position).normalized;
+        transform.position += (Vector3)(dir * speed * Time.deltaTime);
     }
 
-    // --- Functions ---
-    public void TakeDamage(float damage)
+    public void TakeDamage(int dmg)
     {
-        Health -= damage;
-        if (Health <= 0)
-            Die();
-    }
-
-    void EnemyMovement()
-    {
-        rb.linearVelocity = desiredDir * Speed;
-    }
-
-    void Navigation()
-    {
-        if (!target)
-        {
-            desiredDir = Vector2.zero;
-            return;
-        }
-
-        Vector2 toTarget = target.position - transform.position;
-        float dist = toTarget.magnitude;
-
-        if (dist > stopDistance)
-            desiredDir = toTarget.normalized;
-        else
-            desiredDir = Vector2.zero;
-    }
-
-    void EnemyAnimation()
-    {
-        if (rb.linearVelocity.x != 0)
-            sprite.flipX = rb.linearVelocity.x < 0;
-
-        if (animator)
-            animator.SetFloat("Speed", rb.linearVelocity.magnitude);
-    }
-
-    void Die()
-    {
-        rb.linearVelocity = Vector2.zero;
-        //if (animator) animator.SetTrigger("Die");
-        Destroy(gameObject, 0.8f);
-    }
-
-    // --- 攻击逻辑：触碰造成伤害 ---
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            // 直接对玩家造成伤害
-            var player = other.GetComponent<Player>();
-            if (player != null)
-            {
-                //player.TakeDamage(Mathf.RoundToInt(AttackValue));
-            }
-
-            // 如果希望只造成一次伤害（而不是持续接触伤害），可以用Destroy自己
-            // Destroy(gameObject); 
-        }
+        hp -= Mathf.Max(0, dmg);
+        if (hp <= 0) { OnDied?.Invoke(); Destroy(gameObject); }
     }
 }
