@@ -60,4 +60,5 @@ MonoBehaviour:
   coreBuildUIPrefab: {fileID: 0}
   introCutscenes: []
   outroCutscenes: []
-  failCutscenes: []
+  failCutscenes:
+  - {fileID: 4837390862163885188, guid: f95f8423fccba4c41be39bcbc23dfcaa, type: 3}
