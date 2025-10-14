@@ -3945,51 +3945,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'presented by----
-
-
-
-    team you are fired
-
-
-
-    AND
-
-
-
-    Character
-    art:
-
-
-
-    level art:
-
-
-
-    music and audio effect
-
-
-
-    script writing and
-    narrative
-
-
-
-    narrative art:
-
-
-
-    UIUX:
-
-
-
-    Programmer:
-
-
-    Technical
-    Art
-
-'
+  m_text: "presented by----\n\n\nteam you are fired\n\n\nAND\n\n\nCharacter art:\nBinzhou
+    Cheng\nSam \n\nlevel art:\nHuanhuan Su\n\nmusic and audio effect\nJerry Zhai\n\nscript
+    writing and narrative\nJerry Zhai\n\nnarrative art:\nHuanhuan Su\n\nUIUX:\nHuanhuan
+    Su\nSanxing Wang\n\nProgrammer:\nPeiyuan Zhao\nSanxing Wang\nXing Su\n\nProject
+    Management \nSanxing Wang\nXing Su"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
