@@ -6,6 +6,7 @@ using UnityEngine;
 public class pausemanager : MonoBehaviour
 {
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject otherUI;
     [SerializeField] private Player player;
 
     private bool isPaused = false;
@@ -38,6 +39,7 @@ public class pausemanager : MonoBehaviour
             audioManager.PauseBGM();
         // Disable the SpriteRenderer by setting its 'enabled' property to false
         player.GetComponent<SpriteRenderer>().enabled = false;
+        otherUI.SetActive(false);
     }
 
     public void ResumeGame()
@@ -50,5 +52,6 @@ public class pausemanager : MonoBehaviour
             audioManager.ResumeBGM();
         // Enable the SpriteRenderer by setting its 'enabled' property to true
         player.GetComponent<SpriteRenderer>().enabled = true;
+        otherUI.SetActive(true);
     }
 }
