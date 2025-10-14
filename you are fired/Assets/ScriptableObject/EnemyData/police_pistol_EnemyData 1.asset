@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e2084aa3c3e19d4cb67e03277b2d17e, type: 3}
   m_Name: police_pistol_EnemyData 1
   m_EditorClassIdentifier: 
-  prefab: {fileID: 31996032478494500, guid: f28c2504dcee92a4389002a2056e2231, type: 3}
-  maxHealth: 20
-  moveSpeed: 2
+  prefab: {fileID: 31996032478494500, guid: 8481de05a9b3ea948bab9dfd41db438c, type: 3}
+  maxHealth: 15
+  moveSpeed: 1
   expOnDie: 5

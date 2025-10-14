@@ -33,11 +33,19 @@ MonoBehaviour:
   cornerSortingOrder: 11
   enemyTypes:
   - {fileID: 11400000, guid: daea0853ae0d5784bb2e36be3cc3adfa, type: 2}
-  - {fileID: 11400000, guid: daea0853ae0d5784bb2e36be3cc3adfa, type: 2}
+  - {fileID: 11400000, guid: 128e021ce0f63624082724a83721d6b7, type: 2}
   waves:
   - atTime: 0
     entries:
     - enemy: {fileID: 11400000, guid: daea0853ae0d5784bb2e36be3cc3adfa, type: 2}
+      count: 10
+      spawnRect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 50
+        height: 50
+    - enemy: {fileID: 11400000, guid: 128e021ce0f63624082724a83721d6b7, type: 2}
       count: 10
       spawnRect:
         serializedVersion: 2
