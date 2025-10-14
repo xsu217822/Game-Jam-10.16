@@ -47,4 +47,6 @@ public class Sword : WeaponBase
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.position + transform.right * stabDistance);
     }
+
+
 }
