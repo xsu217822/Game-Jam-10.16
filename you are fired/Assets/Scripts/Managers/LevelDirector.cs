@@ -1,22 +1,23 @@
-// Assets/Scripts/LevelDirector.cs
-using System.Collections;                    // Ð­³Ì
+ï»¿// Assets/Scripts/LevelDirector.cs
+using System;                            // Added for Action / events
+using System.Collections;               // Ð­ï¿½ï¿½
 using UnityEngine;
 
 public class LevelDirector : MonoBehaviour
 {
-    [Header("±¾ÂÖÒªÅÜµÄ¹Ø¿¨£¨°´Ë³Ðò£©")]
+    [Header("ï¿½ï¿½ï¿½ï¿½Òªï¿½ÜµÄ¹Ø¿ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½")]
     [SerializeField] private LevelConfig[] campaign;
 
-    [Header("·þÎñÊµÏÖ£¨ÔÚ Inspector ÀïÍÏ×é¼þ£©")]
+    [Header("ï¿½ï¿½ï¿½ï¿½Êµï¿½Ö£ï¿½ï¿½ï¿½ Inspector ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     [SerializeField] private MonoBehaviour cutsceneSvcObj;   // CutsceneManager
     [SerializeField] private MonoBehaviour envBuilderObj;    // EnvironmentManager
     [SerializeField] private MonoBehaviour spawnerObj;       // SpawnManager
     [SerializeField] private MonoBehaviour buildSvcObj;      // BuildManager
 
-    [Header("Í¨¹Ø/Ê§°ÜºóµÄÈ¥Ïò")]
-    [SerializeField] private bool returnToMenuOnEnd = false;  // ½á¾Ö/Ê§°Üºó»ØÖ÷²Ëµ¥
+    [Header("Í¨ï¿½ï¿½/Ê§ï¿½Üºï¿½ï¿½È¥ï¿½ï¿½")]
+    [SerializeField] private bool returnToMenuOnEnd = false;  // ï¿½ï¿½ï¿½/Ê§ï¿½Üºï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½
 
-    // ½Ó¿ÚÒýÓÃ£¨Ö»ÒÀÀµ½Ó¿Ú£¬²»ÒÀÀµ¾ßÌåÀà£©
+    // ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½Ã£ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿Ú£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½à£©
     private ICutsceneService cutscene;
     private IEnvironmentBuilder env;
     private ISpawner spawner;
@@ -24,7 +25,12 @@ public class LevelDirector : MonoBehaviour
 
     private Player player;
 
-    // ¹Ø¼ü´¦£ºÈç¹û·þÎñ°ó¶¨Ê§°Ü£¬Ö±½Ó½ûÓÃ½Å±¾£¬±ÜÃâºóÐø NullReference
+    // Exposed current level info
+    public LevelConfig CurrentLevel { get; private set; }
+    public int CurrentLevelIndex { get; private set; } = -1;
+    public event Action<LevelConfig, int> OnLevelChanged;
+
+    // ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½Ü£ï¿½Ö±ï¿½Ó½ï¿½ï¿½Ã½Å±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ NullReference
     private void Awake()
     {
         cutscene = cutsceneSvcObj as ICutsceneService;
@@ -34,8 +40,8 @@ public class LevelDirector : MonoBehaviour
 
         if (cutscene == null || env == null || spawner == null || build == null)
         {
-            Debug.LogError("LevelDirector: ·þÎñ¶ÔÏóÎ´ÕýÈ·°ó¶¨µ½½Ó¿Ú£¨¼ì²éËÄ¸ö *_Obj ÒýÓÃ£©¡£");
-            enabled = false; // ·ÀÖ¹ºóÐøÐ­³ÌÊ¹ÓÃµ½¿ÕÒýÓÃ
+            Debug.LogError("LevelDirector: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½È·ï¿½ó¶¨µï¿½ï¿½Ó¿Ú£ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ *_Obj ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½");
+            enabled = false; // ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½Ð­ï¿½ï¿½Ê¹ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         }
     }
 
@@ -43,7 +49,7 @@ public class LevelDirector : MonoBehaviour
     {
         if (campaign == null || campaign.Length == 0)
         {
-            Debug.LogError("LevelDirector: campaign Îª¿Õ£¬ÎÞ·¨¿ªÅÜ¡£");
+            Debug.LogError("LevelDirector: campaign Îªï¿½Õ£ï¿½ï¿½Þ·ï¿½ï¿½ï¿½ï¿½Ü¡ï¿½");
             return;
         }
 
@@ -55,27 +61,32 @@ public class LevelDirector : MonoBehaviour
     {
         for (int i = 0; i < campaign.Length;)
         {
-            var cur = campaign[i];
+            // Update current level state & notify listeners (e.g. PauseManager)
+            CurrentLevelIndex = i;
+            CurrentLevel = campaign[i];
+            OnLevelChanged?.Invoke(CurrentLevel, CurrentLevelIndex);
+
+            var cur = CurrentLevel;
             var next = (i + 1 < campaign.Length) ? campaign[i + 1] : null;
 
-            // ¡ª¡ª 1) ¹ØÇ°¾çÇé ¡ª¡ª
+            // ï¿½ï¿½ï¿½ï¿½ 1) ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (cur.introCutscenes != null && cur.introCutscenes.Length > 0)
                 yield return cutscene.PlaySequence(cur.introCutscenes);
 
-            // ¡ª¡ª 2) ºËÐÄ¹¹Öþ£¨Ñ¡×°±¸£© ¡ª¡ª
+            // ï¿½ï¿½ï¿½ï¿½ 2) ï¿½ï¿½ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡×°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             yield return build.DoCoreBuild(cur, player);
 
-            // ¡ª¡ª 3) »·¾³Éú³É + Ë¢¹Ö³õÊ¼»¯ + ¹¹Öþ»á»°ÖØÖÃ ¡ª¡ª
+            // ï¿½ï¿½ï¿½ï¿½ 3) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ + Ë¢ï¿½Ö³ï¿½Ê¼ï¿½ï¿½ + ï¿½ï¿½ï¿½ï¿½ï¿½á»°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             env.Build(cur);
-            spawner.Init(cur, player.transform);       // ¹Ø¼ü£º´« Transform
+            spawner.Init(cur, player.transform);       // ï¿½Ø¼ï¿½ï¿½ï¿½ï¿½ï¿½ Transform
             build.ResetSession(cur, player);
 
-            // ¶©ÔÄ¾­ÑéÊÂ¼þ£¨±£´æÎ¯ÍÐÒÔ±ã½â°ó£©
+            // ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¯ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½
             System.Action<int> expHandler = null;
             expHandler = exp => build.OnGainExp(exp, cur, player);
             spawner.OnKillExp += expHandler;
 
-            // ¡ª¡ª 4) ¹Ø¿¨Ñ­»·£¨Ê¤/¸ºÅÐ¶¨£© ¡ª¡ª
+            // ï¿½ï¿½ï¿½ï¿½ 4) ï¿½Ø¿ï¿½Ñ­ï¿½ï¿½ï¿½ï¿½Ê¤/ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             bool fail = false, clear = false;
             while (true)
             {
@@ -87,12 +98,12 @@ public class LevelDirector : MonoBehaviour
                 yield return null;
             }
 
-            // ½â°ó¾­ÑéÊÂ¼þ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
             spawner.OnKillExp -= expHandler;
 
             if (fail)
             {
-                // Ê§°Ü¾çÇé
+                // Ê§ï¿½Ü¾ï¿½ï¿½ï¿½
                 if (cur.failCutscenes != null && cur.failCutscenes.Length > 0)
                     yield return cutscene.PlaySequence(cur.failCutscenes);
 
@@ -103,7 +114,7 @@ public class LevelDirector : MonoBehaviour
                 yield break;
             }
 
-            // ¡ª¡ª Í¨¹Ø·ÖÖ§ ¡ª¡ª
+            // ï¿½ï¿½ï¿½ï¿½ Í¨ï¿½Ø·ï¿½Ö§ ï¿½ï¿½ï¿½ï¿½
             if (cur.isFinalStage || next == null)
             {
                 if (cur.outroCutscenes != null && cur.outroCutscenes.Length > 0)
@@ -116,17 +127,17 @@ public class LevelDirector : MonoBehaviour
                 yield break;
             }
 
-            // ¡ª¡ª 5) ¹ý³¡ + ÏÂÒ»¹Ø¿ª³¡ ¡ª¡ª 
+            // ï¿½ï¿½ï¿½ï¿½ 5) ï¿½ï¿½ï¿½ï¿½ + ï¿½ï¿½Ò»ï¿½Ø¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
             if (cur.outroCutscenes != null && cur.outroCutscenes.Length > 0)
                 yield return cutscene.PlaySequence(cur.outroCutscenes);
 
             if (next.introCutscenes != null && next.introCutscenes.Length > 0)
                 yield return cutscene.PlaySequence(next.introCutscenes);
 
-            // ÏÂÒ»¹Ø¿ª´òÇ°ÔÙ´Î¸øÒ»ÂÖºËÐÄ¹¹Öþ£¨Èç¹ûÄã²»ÏëÃ¿¹Ø¶¼¸ø£¬¿ÉÒÔ×¢ÊÍµô£©
+            // ï¿½ï¿½Ò»ï¿½Ø¿ï¿½ï¿½ï¿½Ç°ï¿½Ù´Î¸ï¿½Ò»ï¿½Öºï¿½ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã²»ï¿½ï¿½Ã¿ï¿½Ø¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½Íµï¿½ï¿½
             yield return build.DoCoreBuild(next, player);
 
-            // ½øÈëÏÂÒ»¹Ø
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
             i++;
         }
     }

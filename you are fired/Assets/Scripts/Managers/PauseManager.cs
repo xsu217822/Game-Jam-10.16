@@ -1,57 +1,135 @@
 using MyGame.Managers;
 using UnityEngine;
-// Add the following using directive if AudioManager is in a different namespace
-// using YourNamespace; // <-- Replace 'YourNamespace' with the actual namespace of AudioManager
 
+// Pause manager that selects level-specific pause menu
 public class pausemanager : MonoBehaviour
 {
-    [SerializeField] private GameObject pauseMenu;
+    [System.Serializable]
+    public class LevelPauseMapping
+    {
+        public LevelConfig level;
+        public GameObject pauseMenu;
+    }
+
+    [Header("Default / Fallback UI")]
+    [SerializeField] private GameObject pauseMenu;       // Fallback if no mapping
     [SerializeField] private GameObject otherUI;
     [SerializeField] private Player player;
 
+    [Header("Per-Level Pause Menus")]
+    [SerializeField] private LevelPauseMapping[] levelPauseMenus;
+
+    [Header("Refs")]
+    [SerializeField] private LevelDirector levelDirector;
+
+    private GameObject activePauseMenu;
     private bool isPaused = false;
     public AudioManager audioManager;
+
+    private void Awake()
+    {
+        if (!levelDirector)
+            levelDirector = FindObjectOfType<LevelDirector>();
+        if (!player)
+            player = FindObjectOfType<Player>();
+    }
+
+    void OnEnable()
+    {
+        if (levelDirector != null)
+            levelDirector.OnLevelChanged += HandleLevelChanged;
+    }
+
+    void OnDisable()
+    {
+        if (levelDirector != null)
+            levelDirector.OnLevelChanged -= HandleLevelChanged;
+    }
 
     void Start()
     {
         audioManager = FindObjectOfType<AudioManager>();
+        // Initialize current mapping if level already set
+        if (levelDirector && levelDirector.CurrentLevel)
+            HandleLevelChanged(levelDirector.CurrentLevel, levelDirector.CurrentLevelIndex);
+        // Ensure all mapped menus start inactive
+        if (levelPauseMenus != null)
+        {
+            foreach (var m in levelPauseMenus)
+                if (m != null && m.pauseMenu != null)
+                    m.pauseMenu.SetActive(false);
+        }
+        if (pauseMenu) pauseMenu.SetActive(false);
+    }
+
+    private void HandleLevelChanged(LevelConfig cfg, int index)
+    {
+        // Disable previous active menu if any
+        if (activePauseMenu && activePauseMenu != pauseMenu)
+            activePauseMenu.SetActive(false);
+
+        activePauseMenu = null;
+        if (cfg != null && levelPauseMenus != null)
+        {
+            foreach (var m in levelPauseMenus)
+            {
+                if (m != null && m.level == cfg)
+                {
+                    activePauseMenu = m.pauseMenu;
+                    break;
+                }
+            }
+        }
+        if (activePauseMenu == null)
+            activePauseMenu = pauseMenu; // fallback
     }
 
     void Update()
     {
-        // 检查 ESC 键是否被按下
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (!isPaused)
-                PauseGame();
-            else
-                ResumeGame();
+            if (!isPaused) PauseGame();
+            else ResumeGame();
         }
     }
 
     public void PauseGame()
     {
+        if (isPaused) return;
         isPaused = true;
-        Time.timeScale = 0f;
-        if (pauseMenu != null)
-            pauseMenu.SetActive(true);
+        if (GameManager.I != null)
+            GameManager.I.Pause(true); // sync state if GameManager exists
+        else
+            Time.timeScale = 0f;
+
+        if (activePauseMenu != null)
+            activePauseMenu.SetActive(true);
         if (audioManager != null)
             audioManager.PauseBGM();
-        // Disable the SpriteRenderer by setting its 'enabled' property to false
-        player.GetComponent<SpriteRenderer>().enabled = false;
-        otherUI.SetActive(false);
+
+        if (player && player.TryGetComponent<SpriteRenderer>(out var sr))
+            sr.enabled = false;
+
+        if (otherUI) otherUI.SetActive(false);
     }
 
     public void ResumeGame()
     {
+        if (!isPaused) return;
         isPaused = false;
-        Time.timeScale = 1f;
-        if (pauseMenu != null)
-            pauseMenu.SetActive(false);
+        if (GameManager.I != null)
+            GameManager.I.Pause(false);
+        else
+            Time.timeScale = 1f;
+
+        if (activePauseMenu != null)
+            activePauseMenu.SetActive(false);
         if (audioManager != null)
             audioManager.ResumeBGM();
-        // Enable the SpriteRenderer by setting its 'enabled' property to true
-        player.GetComponent<SpriteRenderer>().enabled = true;
-        otherUI.SetActive(true);
+
+        if (player && player.TryGetComponent<SpriteRenderer>(out var sr))
+            sr.enabled = true;
+
+        if (otherUI) otherUI.SetActive(true);
     }
 }
