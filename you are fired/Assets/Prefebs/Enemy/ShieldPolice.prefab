@@ -129,7 +129,7 @@ MonoBehaviour:
   expOnDie: 5
   animator: {fileID: 0}
   faceToMove: 1
-  stopDistance: 0
+  stopDistance: 0.3
   hitInvincibleSeconds: 0.15
 --- !u!61 &3814956872781321982
 BoxCollider2D:
