@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8745592265195483505}
   - component: {fileID: 3814956872781321982}
   m_Layer: 0
-  m_Name: GunPolice
+  m_Name: Colleague
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -2856239308002490196, guid: 6c37953c9c451044ca67053d2cf7993b, type: 3}
+  m_Sprite: {fileID: 5719489079334853918, guid: 66a4f14e16d500143ae5e5d4dd6e893e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,7 +100,7 @@ Animator:
   m_GameObject: {fileID: 31996032478494500}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 87d1ec48641f3ba42bdb851763c2e11a, type: 2}
+  m_Controller: {fileID: 9100000, guid: d78c68e8702a55d4d8f6647fec8ded30, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -127,7 +127,7 @@ MonoBehaviour:
   maxHp: 30
   speed: 2
   expOnDie: 5
-  animator: {fileID: 2293072452740992870}
+  animator: {fileID: 0}
   faceToMove: 1
   stopDistance: 2
   hitInvincibleSeconds: 0.15
