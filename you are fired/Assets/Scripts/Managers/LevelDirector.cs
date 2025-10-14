@@ -24,9 +24,9 @@ public class LevelDirector : MonoBehaviour
 
     private Player player;
 
+    // 关键处：如果服务绑定失败，直接禁用脚本，避免后续 NullReference
     private void Awake()
     {
-        // 把 MonoBehaviour 强转为接口；缺哪个就报错防止空引用
         cutscene = cutsceneSvcObj as ICutsceneService;
         env = envBuilderObj as IEnvironmentBuilder;
         spawner = spawnerObj as ISpawner;
@@ -35,6 +35,7 @@ public class LevelDirector : MonoBehaviour
         if (cutscene == null || env == null || spawner == null || build == null)
         {
             Debug.LogError("LevelDirector: 服务对象未正确绑定到接口（检查四个 *_Obj 引用）。");
+            enabled = false; // 防止后续协程使用到空引用
         }
     }
 

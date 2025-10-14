@@ -1,6 +1,7 @@
-// Assets/Scripts/CutsceneManager.cs
+    // Assets/Scripts/CutsceneManager.cs
 using System.Collections;          // ← 必须有：协程用到非泛型 IEnumerator
 using UnityEngine;
+using UnityEngine.InputSystem;     // 支持新输入系统（可选）
 
 public class CutsceneManager : MonoBehaviour, ICutsceneService
 {
@@ -14,30 +15,34 @@ public class CutsceneManager : MonoBehaviour, ICutsceneService
         // 全局暂停
         float oldScale = Time.timeScale;
         Time.timeScale = 0f;
-
-        for (int i = 0; i < prefabs.Length; i++)
+        try
         {
-            var go = Instantiate(prefabs[i]);
-
-            // 统一用 CutscenePlayer 来判定“什么时候结束”
-            var cp = go.GetComponent<CutscenePlayer>() ?? go.AddComponent<CutscenePlayer>();
-
-            bool done = false;
-            cp.Play(() => done = true);
-
-            // 等这一段播完；可选的“任意键跳过”
-            while (!done)
+            for (int i = 0; i < prefabs.Length; i++)
             {
-                if (allowSkip && Input.anyKeyDown)
+                var go = Instantiate(prefabs[i]);
+
+                // 统一用 CutscenePlayer 来判定“什么时候结束”
+                var cp = go.GetComponent<CutscenePlayer>() ?? go.AddComponent<CutscenePlayer>();
+
+                bool done = false;
+                cp.Play(() => done = true);
+
+                // 等这一段播完；可选的“任意键跳过”
+                while (!done)
                 {
-                    // 直接通知结束（如果CutscenePlayer里接了Timeline/按钮，也会正常收尾）
-                    cp.SignalDone();
+                    if (allowSkip && (Input.anyKeyDown ||
+                        (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)))
+                    {
+                        cp.SignalDone();
+                    }
+                    yield return null;
                 }
-                yield return null;
             }
         }
-
-        // 恢复时间
-        Time.timeScale = oldScale;
+        finally
+        {
+            // 恢复时间（防止异常导致卡死在暂停态）
+            Time.timeScale = oldScale;
+        }
     }
 }
