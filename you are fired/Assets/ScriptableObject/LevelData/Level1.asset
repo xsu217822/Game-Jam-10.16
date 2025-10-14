@@ -33,6 +33,7 @@ MonoBehaviour:
   cornerSortingOrder: 11
   enemyTypes:
   - {fileID: 11400000, guid: daea0853ae0d5784bb2e36be3cc3adfa, type: 2}
+  - {fileID: 11400000, guid: daea0853ae0d5784bb2e36be3cc3adfa, type: 2}
   waves:
   - atTime: 0
     entries:

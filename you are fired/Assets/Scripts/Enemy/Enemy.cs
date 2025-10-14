@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour, IDamageable
     [Header("Animation")]
     [SerializeField] private Animator animator;
     [SerializeField] private bool faceToMove = true;
-    [SerializeField] private float stopDistance = 1.2f;
+    [SerializeField] private float stopDistance =0.1f;
 
     [Header("Hit Feedback")]
     [SerializeField] private float hitInvincibleSeconds = 0.15f;

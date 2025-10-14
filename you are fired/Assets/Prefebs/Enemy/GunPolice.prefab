@@ -124,9 +124,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c66a2767c5c7a5c44ba7826cd885f422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHp: 30
+  speed: 2
+  expOnDie: 5
   animator: {fileID: 0}
   faceToMove: 1
-  stopDistance: 1.2
+  stopDistance: 2
+  hitInvincibleSeconds: 0.15
 --- !u!61 &3814956872781321982
 BoxCollider2D:
   m_ObjectHideFlags: 0
