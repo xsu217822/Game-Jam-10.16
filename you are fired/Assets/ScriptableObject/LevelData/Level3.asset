@@ -14,21 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: 
   isFinalStage: 0
-  floorSprite: {fileID: 21300000, guid: e0994b2d24cd2eb4e966076c7c0beb97, type: 3}
-  wallSprite: {fileID: 2171119254634191944, guid: fac4e23a61ac98f4b994efeda263c76a, type: 3}
-  cornerAny: {fileID: 1061178394774686167, guid: a6010a9006a04c5438b4b54d1d7f8534, type: 3}
-  cornerTopLeft: {fileID: 0}
-  cornerTopRight: {fileID: 0}
-  cornerBottomLeft: {fileID: 0}
-  cornerBottomRight: {fileID: 0}
   width: 32
   height: 18
-  borderThickness: 1
   cellSize: 1
   origin: {x: 0, y: 0}
-  sortingLayer: Default
-  floorOrder: 0
-  wallOrder: 1
+  floorPrefab: {fileID: 6350207714927257892, guid: 3f7c2051e0ecfec4d8f3a1bf88a20f73, type: 3}
+  wallHalfPrefab: {fileID: 9082593724938064246, guid: 02fa0e5296c136548a3d4807a518255b, type: 3}
+  corner3QPrefab: {fileID: 4889911320869860216, guid: ebcd8ad82be87634fa23e6ab1a3f2736, type: 3}
+  wallHalfThickness: 1
+  wallHalfInsetFactor: 0.25
+  cornerInsetFactor: 0.25
+  prefabRotBiasDeg: 180
+  floorSortingLayer: Ground
+  floorSortingOrder: 0
+  wallSortingLayer: Walls
+  wallSortingOrder: 10
+  cornerSortingLayer: Walls
+  cornerSortingOrder: 11
   enemyTypes: []
   waves: []
   xpThresholds: 0a000000190000002d00000046000000

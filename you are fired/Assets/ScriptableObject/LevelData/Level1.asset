@@ -18,9 +18,9 @@ MonoBehaviour:
   height: 18
   cellSize: 1
   origin: {x: -15.75, y: -8.75}
-  floorPrefab: {fileID: 5477918567763776465, guid: f9e366a586c9724489fbc41e8ea2320f, type: 3}
-  wallHalfPrefab: {fileID: 5477918567763776465, guid: 02fa0e5296c136548a3d4807a518255b, type: 3}
-  corner3QPrefab: {fileID: 5477918567763776465, guid: ebcd8ad82be87634fa23e6ab1a3f2736, type: 3}
+  floorPrefab: {fileID: 2109945633762680230, guid: dc22243248be9a848977805c2ee4c89f, type: 3}
+  wallHalfPrefab: {fileID: 4680643065789203168, guid: 55be629484fb6a8428e38e186d49beb2, type: 3}
+  corner3QPrefab: {fileID: 811868332504270631, guid: 7ae035cf1de999f4fad93cef6642aa82, type: 3}
   wallHalfThickness: 1
   wallHalfInsetFactor: 0.25
   cornerInsetFactor: 0.25

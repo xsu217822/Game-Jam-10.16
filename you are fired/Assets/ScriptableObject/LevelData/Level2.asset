@@ -14,35 +14,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: 
   isFinalStage: 0
-  playerData: {fileID: 0}
+  width: 32
+  height: 18
+  cellSize: 1
+  origin: {x: 0, y: 0}
+  floorPrefab: {fileID: 3667275548653197934, guid: 88b3b2553560fe949bbe161fd7779b6d, type: 3}
+  wallHalfPrefab: {fileID: 6212006602431212180, guid: b0209378bab05624d9d75befba11a216, type: 3}
+  corner3QPrefab: {fileID: 1653521484724422192, guid: 13027113f94ed3241aa345e93a5d15e2, type: 3}
+  wallHalfThickness: 1
+  wallHalfInsetFactor: 0.25
+  cornerInsetFactor: 0.25
+  prefabRotBiasDeg: 180
+  floorSortingLayer: Ground
+  floorSortingOrder: 0
+  wallSortingLayer: Walls
+  wallSortingOrder: 10
+  cornerSortingLayer: Walls
+  cornerSortingOrder: 11
   enemyTypes: []
-  tilePreset: {fileID: 0}
   waves: []
-  expCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 1
-      value: 10
-      inSlope: 0
-      outSlope: 1.8367347
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 50
-      value: 100
-      inSlope: 1.8367347
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  baseExpToLevel: 20
-  choicesPerLevel: 3
-  failEndingUIPrefab: {fileID: 0}
-  successEndingUIPrefab: {fileID: 0}
+  xpThresholds: 0a000000190000002d00000046000000
+  microPool: []
+  microBuildUIPrefab: {fileID: 0}
+  coreEquipPool: []
+  coreBuildUIPrefab: {fileID: 0}
+  introCutscenes: []
+  outroCutscenes: []
+  failCutscenes: []
