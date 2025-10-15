@@ -39,5 +39,7 @@ MonoBehaviour:
   coreEquipPool: []
   coreBuildUIPrefab: {fileID: 0}
   introCutscenes: []
-  outroCutscenes: []
-  failCutscenes: []
+  outroCutscenes:
+  - {fileID: 6571100063975068831, guid: 6a9e047860be26742924e464f847fc1e, type: 3}
+  failCutscenes:
+  - {fileID: 4039085190136875501, guid: 71e8505048ac93e4dacdcc0964545372, type: 3}

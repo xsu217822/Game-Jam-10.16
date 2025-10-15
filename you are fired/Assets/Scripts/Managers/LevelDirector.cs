@@ -69,24 +69,24 @@ public class LevelDirector : MonoBehaviour
             var cur = CurrentLevel;
             var next = (i + 1 < campaign.Length) ? campaign[i + 1] : null;
 
-            // ���� 1) ��ǰ���� ����
+            // 1) Play current level intro ONCE (don't also play next.intro at the end of previous level)
             if (cur.introCutscenes != null && cur.introCutscenes.Length > 0)
                 yield return cutscene.PlaySequence(cur.introCutscenes);
 
-            // ���� 2) ���Ĺ�����ѡװ���� ����
+            // 2) Core build for the current level
             yield return build.DoCoreBuild(cur, player);
 
-            // ���� 3) �������� + ˢ�ֳ�ʼ�� + �����Ự���� ����
+            // 3) Build environment + init spawner + reset build session
             env.Build(cur);
-            spawner.Init(cur, player.transform);       // �ؼ����� Transform
+            spawner.Init(cur, player.transform);
             build.ResetSession(cur, player);
 
-            // ���ľ����¼�������ί���Ա���
+            // EXP relay
             System.Action<int> expHandler = null;
             expHandler = exp => build.OnGainExp(exp, cur, player);
             spawner.OnKillExp += expHandler;
 
-            // ���� 4) �ؿ�ѭ����ʤ/���ж��� ����
+            // 4) Level loop: win/lose conditions
             bool fail = false, clear = false;
             while (true)
             {
@@ -98,12 +98,11 @@ public class LevelDirector : MonoBehaviour
                 yield return null;
             }
 
-            // ������¼�
+            // Unhook
             spawner.OnKillExp -= expHandler;
 
             if (fail)
             {
-                // ʧ�ܾ���
                 if (cur.failCutscenes != null && cur.failCutscenes.Length > 0)
                     yield return cutscene.PlaySequence(cur.failCutscenes);
 
@@ -114,7 +113,7 @@ public class LevelDirector : MonoBehaviour
                 yield break;
             }
 
-            // ���� ͨ�ط�֧ ����
+            // Final stage or end of campaign
             if (cur.isFinalStage || next == null)
             {
                 if (cur.outroCutscenes != null && cur.outroCutscenes.Length > 0)
@@ -127,17 +126,12 @@ public class LevelDirector : MonoBehaviour
                 yield break;
             }
 
-            // ���� 5) ���� + ��һ�ؿ��� ���� 
+            // 5) Between levels: play ONLY current outro here.
+            // Next level intro is played at the start of the next loop iteration.
             if (cur.outroCutscenes != null && cur.outroCutscenes.Length > 0)
                 yield return cutscene.PlaySequence(cur.outroCutscenes);
 
-            if (next.introCutscenes != null && next.introCutscenes.Length > 0)
-                yield return cutscene.PlaySequence(next.introCutscenes);
-
-            // ��һ�ؿ���ǰ�ٴθ�һ�ֺ��Ĺ���������㲻��ÿ�ض���������ע�͵��
-            yield return build.DoCoreBuild(next, player);
-
-            // ������һ��
+            // Advance to next level
             i++;
         }
     }

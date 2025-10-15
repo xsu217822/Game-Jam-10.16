@@ -2229,7 +2229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f475535d007f77240bea28f8d7b34404, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowSkip: 0
+  allowSkip: 1
 --- !u!1 &2087808273
 GameObject:
   m_ObjectHideFlags: 0
@@ -2387,6 +2387,7 @@ MonoBehaviour:
   rb: {fileID: 358925115621638250}
   MaxHP: 100
   HP: 100
+  hitInvincibleSeconds: 0.15
   MoveSpeed: 5
 --- !u!50 &358925115621638250
 Rigidbody2D:
