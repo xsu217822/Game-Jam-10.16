@@ -26,10 +26,18 @@ public class Player : MonoBehaviour, IDamageable
     // 暴露百分比给血条 UI 使用
     public float HpPercent => MaxHP <= 0 ? 0f : (float)HP / MaxHP;
 
+    [Header("Weapon")]
+    public WeaponBase equippedWeapon;
+    public GameObject swordPrefab; // Reference to the sword prefab
+
     private void Awake()
     {
         if (!rb) rb = GetComponent<Rigidbody2D>() ?? gameObject.AddComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
+
+        // Example: Equip a sword at start (replace with your prefab/logic)
+        equippedWeapon = Instantiate(swordPrefab, transform).GetComponent<WeaponBase>();
+        equippedWeapon.transform.localPosition = Vector3.zero;
     }
 
     public void ApplyBase(int hp, float speed)
@@ -47,6 +55,14 @@ public class Player : MonoBehaviour, IDamageable
             rb.linearVelocity = move.normalized * MoveSpeed;
         else
             rb.linearVelocity = Vector2.zero;
+    }
+
+    public void OnAttack(InputValue value)
+    {
+        if (equippedWeapon != null)
+        {
+            equippedWeapon.Attack();
+        }
     }
 
     public void TakeDamage(float amount)
@@ -82,9 +98,9 @@ public class Player : MonoBehaviour, IDamageable
     public void AddExp(int amount)
     {
         Exp += Mathf.Max(0, amount);
-        while (Exp >= Level * 100)
+        while (Exp >= Level * 100) Exp -= Level * 100;
         {
-            // 100 经验升级
+            // 100 经验升级     
             Exp -= Level * 100;
             LevelUp();
         }
