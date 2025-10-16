@@ -465,7 +465,7 @@ GameObject:
   - component: {fileID: 359142713}
   - component: {fileID: 359142714}
   m_Layer: 0
-  m_Name: SpawnManager
+  m_Name: EnemyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1415,7 +1415,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f54114d74826b3e41af9e7969fcd7f70, type: 2}
   cutsceneSvcObj: {fileID: 2047259503}
   envBuilderObj: {fileID: 2035160187}
-  spawnerObj: {fileID: 359142714}
+  enemyMgrObj: {fileID: 359142714}
   buildSvcObj: {fileID: 711480684}
   returnToMenuOnEnd: 1
 --- !u!1 &1570953823
@@ -2230,6 +2230,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allowSkip: 1
+  prefabCanvas: {fileID: 0}
+  prefabImage: {fileID: 0}
+  prefabText: {fileID: 0}
+  fadeSeconds: 0.35
+  typewriterCharsPerSec: 28
 --- !u!1 &2087808273
 GameObject:
   m_ObjectHideFlags: 0
@@ -2389,6 +2394,14 @@ MonoBehaviour:
   HP: 100
   hitInvincibleSeconds: 0.15
   MoveSpeed: 5
+  keyboardPrefab: {fileID: 0}
+  injectorPrefab: {fileID: 0}
+  gunPrefab: {fileID: 0}
+  bottlePrefab: {fileID: 0}
+  cleaverPrefab: {fileID: 0}
+  penPrefab: {fileID: 0}
+  scalpelPrefab: {fileID: 0}
+  swordPrefab: {fileID: 0}
 --- !u!50 &358925115621638250
 Rigidbody2D:
   serializedVersion: 5

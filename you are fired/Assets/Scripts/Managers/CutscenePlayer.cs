@@ -1,13 +1,13 @@
 // Assets/Scripts/CutscenePlayer.cs
-using System;                     // Action
+using System;
 using UnityEngine;
-using UnityEngine.Playables;      // 兼容Timeline
-using UnityEngine.UI;             // 兼容按钮关闭
+using UnityEngine.Playables;
+using UnityEngine.UI;
 
 public class CutscenePlayer : MonoBehaviour
 {
-    [SerializeField] private PlayableDirector timeline; // 可为空：自动在子物体查找
-    [SerializeField] private Button closeButton;        // 可为空：自动在子物体查找
+    [SerializeField] private PlayableDirector timeline;
+    [SerializeField] private Button closeButton;
 
     private Action onDone;
     private bool finished;
@@ -17,7 +17,6 @@ public class CutscenePlayer : MonoBehaviour
         if (!timeline) timeline = GetComponentInChildren<PlayableDirector>(true);
         if (timeline)
         {
-            // 让Timeline在暂停态下仍能播放
             timeline.timeUpdateMode = DirectorUpdateMode.UnscaledGameTime;
             timeline.stopped += _ => SafeDone();
         }
@@ -30,7 +29,6 @@ public class CutscenePlayer : MonoBehaviour
         }
     }
 
-    // 由 CutsceneManager 调用
     public void Play(Action done)
     {
         onDone = done;
@@ -40,7 +38,6 @@ public class CutscenePlayer : MonoBehaviour
             timeline.time = 0;
             timeline.Play();
         }
-        // 没有Timeline/按钮的Prefab可通过外部 SignalDone() 结束
     }
 
     public void SignalDone() => SafeDone();
@@ -49,10 +46,8 @@ public class CutscenePlayer : MonoBehaviour
     {
         if (finished) return;
         finished = true;
-
-        var cb = onDone;
-        onDone = null;
+        var cb = onDone; onDone = null;
         try { cb?.Invoke(); }
-        finally { Destroy(gameObject); } // 剧情结束后销毁实例
+        finally { Destroy(gameObject); }
     }
 }

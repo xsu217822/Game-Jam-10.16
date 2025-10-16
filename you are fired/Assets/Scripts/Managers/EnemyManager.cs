@@ -1,8 +1,8 @@
-// Assets/Scripts/SpawnManager.cs
+// Assets/Scripts/EnemyManager.cs
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnManager : MonoBehaviour, ISpawner
+public class EnemyManager : MonoBehaviour, IEnemyManager
 {
     public event System.Action<int> OnKillExp;
 
@@ -14,33 +14,48 @@ public class SpawnManager : MonoBehaviour, ISpawner
 
     public bool AllWavesDispatched => cfg == null || fired.Count >= (cfg.waves?.Length ?? 0);
     public bool AllCleared => alive.Count == 0;
+    public int AliveCount => alive.Count;
 
     public void Init(LevelConfig c, Transform p)
     {
-        cfg = c; player = p;
-        fired.Clear(); alive.Clear(); time = 0f;
+        cfg = c;
+        player = p;
+        fired.Clear();
+        time = 0f;
+
+        // 清理上一关遗留
+        for (int i = alive.Count - 1; i >= 0; i--)
+            if (alive[i] != null) Destroy(alive[i].gameObject);
+        alive.Clear();
     }
 
     public void Tick(float dt)
     {
         time += dt;
         if (cfg?.waves == null) return;
+
         foreach (var w in cfg.waves)
         {
             if (!fired.Contains(w) && time >= w.atTime)
             {
-                FireWave(w);
+                SpawnWave(w);
                 fired.Add(w);
             }
         }
+
+        // 清理已销毁引用
+        for (int i = alive.Count - 1; i >= 0; i--)
+            if (!alive[i]) alive.RemoveAt(i);
     }
 
-    private void FireWave(LevelConfig.Wave w)
+    private void SpawnWave(LevelConfig.Wave w)
     {
         if (w.entries == null) return;
+
         foreach (var e in w.entries)
         {
             if (!e.enemy || !e.enemy.prefab) continue;
+
             for (int i = 0; i < e.count; i++)
             {
                 var pos = new Vector3(
@@ -50,14 +65,15 @@ public class SpawnManager : MonoBehaviour, ISpawner
                 var go = Instantiate(e.enemy.prefab, pos, Quaternion.identity);
                 var en = go.GetComponent<Enemy>() ?? go.AddComponent<Enemy>();
                 en.Init(e.enemy, player);
+
                 en.OnDied += dead =>
                 {
                     alive.Remove(dead);
                     OnKillExp?.Invoke(e.enemy.expOnDie);
                 };
+
                 alive.Add(en);
             }
         }
     }
 }
-

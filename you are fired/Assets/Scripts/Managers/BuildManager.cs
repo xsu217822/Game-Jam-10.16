@@ -5,37 +5,48 @@ using UnityEngine;
 
 /// <summary>
 /// 构筑系统总管：
-/// - 核心构筑：每关开头“选装备”（实例化装备并绑定玩家）
-/// - 小构筑：达到经验阈值时弹出“选加成”，把加成应用到当前所有装备
-/// 依赖：ChoiceUI、WeaponData(IEquipment/IEquipmentMod)、MicroModData、LevelConfig、Player
+/// - 核心构筑：每关开头“两次选择”（近战一次、远程一次），实例化装备并绑定玩家
+/// - 小构筑：达到经验阈值时弹出“选加成”，把加成仅应用到【本关所选】的装备组
+/// - 保留策略：所有关卡已选择的武器会一直保留到通关（总共4关=8件）
+/// - 运行期状态：经验、阈值索引、【本关武器组】列表、全部装备列表
 /// </summary>
 public class BuildManager : MonoBehaviour, IBuildService
 {
-    [Header("把装备挂到哪里（可留空=挂到玩家身上）")]
+    [Header("把装备挂到哪里（空=挂到玩家身上）")]
     [SerializeField] private Transform equipRoot;
 
-    // 装备实例（玩家当前持有）
-    private readonly List<GameObject> equips = new();
+    // 全部装备（跨关累计）
+    private readonly List<GameObject> allEquips = new();
+
+    // 本关装备（仅本关构筑作用的目标集合）
+    private readonly List<GameObject> currentLevelEquips = new();
 
     // 小构筑的运行期状态
-    private int xpAccum = 0;       // 当前累计经验
-    private int thresholdIdx = 0;  // 已经触发到第几个阈值
-    private bool microOpen = false; // 小构筑UI是否正在打开（防重入）
+    private int xpAccum = 0;       // 当前关累计经验
+    private int thresholdIdx = 0;  // 当前关已触发到第几个阈值
+    private bool microOpen = false;
 
-    /// <summary>
-    /// 核心构筑：从 LevelConfig.coreEquipPool 中多选一，实例化装备并绑定到玩家
-    /// </summary>
     public IEnumerator DoCoreBuild(LevelConfig cfg, Player player)
     {
-        var pool = cfg.coreEquipPool;
+        // 每关开始：清空“本关装备组”列表（但不清历史装备）
+        currentLevelEquips.Clear();
+
+        // 依次选择：近战 → 远程
+        yield return PickFromPool(cfg.coreMeleePool, cfg, player, currentLevelEquips);
+        yield return PickFromPool(cfg.coreRangedPool, cfg, player, currentLevelEquips);
+
+        // 选完后，本关两件已加入 currentLevelEquips & allEquips
+        // 后续小构筑仅针对 currentLevelEquips 应用
+    }
+
+    private IEnumerator PickFromPool(WeaponData[] pool, LevelConfig cfg, Player player, List<GameObject> levelEquipCollector)
+    {
         if (pool == null || pool.Length == 0 || !cfg.coreBuildUIPrefab) yield break;
 
-        // 选项名称
         var labels = new string[pool.Length];
         for (int i = 0; i < pool.Length; i++)
             labels[i] = pool[i]?.displayName ?? $"Equip {i + 1}";
 
-        // 打开 UI
         var ui = Instantiate(cfg.coreBuildUIPrefab);
         var chooser = ui.GetComponent<ChoiceUI>() ?? ui.AddComponent<ChoiceUI>();
 
@@ -48,53 +59,48 @@ public class BuildManager : MonoBehaviour, IBuildService
             {
                 var parent = equipRoot ? equipRoot : player.transform;
                 var go = Instantiate(w.prefab, parent);
-                // 绑定到玩家
                 var eq = go.GetComponent<IEquipment>();
                 eq?.BindOwner(player);
-                equips.Add(go);
+
+                // 计入“全部装备”与“本关装备”
+                allEquips.Add(go);
+                levelEquipCollector.Add(go);
             }
             done = true;
         });
 
-        // 暂停时间直到选择完成
         Time.timeScale = 0f;
         while (!done) yield return null;
         Time.timeScale = 1f;
     }
 
-    /// <summary>
-    /// 每关开始重置小构筑的计数与状态（不清空已有装备）
-    /// </summary>
     public void ResetSession(LevelConfig cfg, Player player)
     {
+        // 只重置小构筑运行期数据；不清“本关装备组”（它由 DoCoreBuild 重建）
         xpAccum = 0;
         thresholdIdx = 0;
         microOpen = false;
-        // 清理已被销毁的装备引用（安全起见）
-        for (int i = equips.Count - 1; i >= 0; i--)
-            if (!equips[i]) equips.RemoveAt(i);
+
+        // 清理已被销毁的引用（全局与本关）
+        for (int i = allEquips.Count - 1; i >= 0; i--)
+            if (!allEquips[i]) allEquips.RemoveAt(i);
+        for (int i = currentLevelEquips.Count - 1; i >= 0; i--)
+            if (!currentLevelEquips[i]) currentLevelEquips.RemoveAt(i);
     }
 
-    /// <summary>
-    /// 由刷怪系统驱动：获得经验时调用。若达到阈值，触发一次小构筑。
-    /// </summary>
     public void OnGainExp(int exp, LevelConfig cfg, Player player)
     {
         xpAccum += Mathf.Max(0, exp);
-        if (microOpen) return; // UI 正在开，先不叠触发
+        if (microOpen) return;
 
         var th = cfg.xpThresholds;
         if (th != null && thresholdIdx < th.Length && xpAccum >= th[thresholdIdx])
         {
             thresholdIdx++;
-            // 触发一次小构筑
-            StartCoroutine(DoMicroBuild(cfg, player));
+            StartCoroutine(DoMicroBuild(cfg, player)); // 仅作用 currentLevelEquips
         }
     }
 
-    /// <summary>
-    /// 小构筑：从 LevelConfig.microPool 多选一，把加成应用到所有当前装备（实现了 IEquipmentMod 的）
-    /// </summary>
     public IEnumerator DoMicroBuild(LevelConfig cfg, Player player)
     {
         var pool = cfg.microPool;
@@ -102,12 +108,10 @@ public class BuildManager : MonoBehaviour, IBuildService
 
         microOpen = true;
 
-        // 选项名称
         var labels = new string[pool.Length];
         for (int i = 0; i < pool.Length; i++)
             labels[i] = pool[i]?.displayName ?? $"Mod {i + 1}";
 
-        // 打开 UI
         var ui = Instantiate(cfg.microBuildUIPrefab);
         var chooser = ui.GetComponent<ChoiceUI>() ?? ui.AddComponent<ChoiceUI>();
 
@@ -116,18 +120,18 @@ public class BuildManager : MonoBehaviour, IBuildService
         {
             var idx = Mathf.Clamp(pick, 0, pool.Length - 1);
             var mod = pool[idx];
-            // 应用到当前所有装备
-            for (int i = equips.Count - 1; i >= 0; i--)
+
+            // ——关键：只对“本关两件武器”应用Mod——
+            for (int i = currentLevelEquips.Count - 1; i >= 0; i--)
             {
-                var go = equips[i];
-                if (!go) { equips.RemoveAt(i); continue; }
+                var go = currentLevelEquips[i];
+                if (!go) { currentLevelEquips.RemoveAt(i); continue; }
                 var modder = go.GetComponent<IEquipmentMod>();
                 modder?.ApplyMod(mod);
             }
             done = true;
         });
 
-        // 暂停时间直到选择完成
         Time.timeScale = 0f;
         while (!done) yield return null;
         Time.timeScale = 1f;
@@ -135,6 +139,7 @@ public class BuildManager : MonoBehaviour, IBuildService
         microOpen = false;
     }
 
-    // —— 可选：对外只读访问当前装备（调试/展示用）——
-    public IReadOnlyList<GameObject> CurrentEquips => equips;
+    // 调试/展示用
+    public IReadOnlyList<GameObject> AllEquips => allEquips;
+    public IReadOnlyList<GameObject> CurrentLevelEquips => currentLevelEquips;
 }

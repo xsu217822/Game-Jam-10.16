@@ -1,13 +1,14 @@
+// Assets/Scripts/GameManager.cs
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum GameState { MainMenu, Playing, Paused }
+public enum GameState { MainMenu, Playing } // 两态
 
 public class GameManager : MonoBehaviour
 {
     [Header("Scene Names")]
     [SerializeField] private string mainMenuScene = "MainMenu";
-    [SerializeField] private string levelScene = "LevelScene"; // 唯一的游戏场景
+    [SerializeField] private string levelScene = "LevelScene";
 
     public static GameManager I { get; private set; }
     public GameState State { get; private set; } = GameState.MainMenu;
@@ -18,13 +19,11 @@ public class GameManager : MonoBehaviour
         I = this;
         DontDestroyOnLoad(gameObject);
 
-        // 若当前不在主菜单或关卡场景，就回主菜单
         var cur = SceneManager.GetActiveScene().name;
         if (cur != mainMenuScene && cur != levelScene)
             LoadMainMenu();
     }
 
-    // ===== 场景控制 =====
     public void LoadMainMenu()
     {
         State = GameState.MainMenu;
@@ -32,26 +31,22 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(mainMenuScene);
     }
 
-    public void StartGame() // 主菜单“开始”按钮调用这个
-    {
-        State = GameState.Playing;
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(levelScene);
-        // 进入 LevelScene 后，由 LevelDirector 自己按照 campaign 跑四关
-    }
-
-    public void RestartGame() // 可选：从头再来
+    public void StartGame()
     {
         State = GameState.Playing;
         Time.timeScale = 1f;
         SceneManager.LoadScene(levelScene);
     }
 
-    public void Pause(bool pause)
+    public void RestartGame()
     {
-        State = pause ? GameState.Paused : GameState.Playing;
-        Time.timeScale = pause ? 0f : 1f;
+        State = GameState.Playing;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(levelScene);
     }
+
+    // 只控时间，不改 State（满足“两态”）
+    public void Pause(bool pause) => Time.timeScale = pause ? 0f : 1f;
 
     public void Quit()
     {
