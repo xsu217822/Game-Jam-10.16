@@ -53,7 +53,7 @@ public class KeyboardWeapon : WeaponBase
         {
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.LookRotation(Vector3.forward, Vector3.right));
             Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
-            if (rb != null) rb.velocity = (Vector2)(firePoint.right) * bulletSpeed;
+            if (rb != null) rb.linearVelocity = (Vector2)(firePoint.right) * bulletSpeed;
         }
 
         Debug.Log($"[Keyboard] fired a bullet!");
