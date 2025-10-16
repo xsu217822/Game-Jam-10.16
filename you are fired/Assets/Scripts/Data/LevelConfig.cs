@@ -62,6 +62,11 @@ public class LevelConfig : ScriptableObject
     public StoryPage[] outroPages;
     public StoryPage[] failPages;
 
+    [Header("关卡BGM")]
+    public AudioClip levelIntroBgm;   // 开场片段（播一次，可空）
+    public AudioClip levelLoopBgm;    // 循环片段（必填，循环）
+
+
     [System.Serializable]
     public struct StoryPage
     {

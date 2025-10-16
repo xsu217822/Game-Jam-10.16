@@ -14,32 +14,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   displayName: 
   isFinalStage: 0
+  origin: {x: 0, y: 0}
   width: 32
   height: 18
   cellSize: 1
-  origin: {x: 0, y: 0}
+  prefabRotBiasDeg: 180
   floorPrefab: {fileID: 3667275548653197934, guid: 88b3b2553560fe949bbe161fd7779b6d, type: 3}
   wallHalfPrefab: {fileID: 6212006602431212180, guid: b0209378bab05624d9d75befba11a216, type: 3}
   corner3QPrefab: {fileID: 1653521484724422192, guid: 13027113f94ed3241aa345e93a5d15e2, type: 3}
-  wallHalfThickness: 1
-  wallHalfInsetFactor: 0.25
-  cornerInsetFactor: 0.25
-  prefabRotBiasDeg: 180
   floorSortingLayer: Ground
   floorSortingOrder: 0
   wallSortingLayer: Walls
   wallSortingOrder: 10
   cornerSortingLayer: Walls
   cornerSortingOrder: 11
-  enemyTypes: []
+  wallHalfInsetFactor: 0.25
+  wallHalfThickness: 1
+  cornerInsetFactor: 0.25
   waves: []
   xpThresholds: 0a000000190000002d00000046000000
-  microPool: []
-  microBuildUIPrefab: {fileID: 0}
-  coreEquipPool: []
   coreBuildUIPrefab: {fileID: 0}
+  microBuildUIPrefab: {fileID: 0}
+  coreMeleePool: []
+  coreRangedPool: []
+  microPool: []
   introCutscenes: []
   outroCutscenes:
   - {fileID: 6571100063975068831, guid: 6a9e047860be26742924e464f847fc1e, type: 3}
   failCutscenes:
   - {fileID: 4039085190136875501, guid: 71e8505048ac93e4dacdcc0964545372, type: 3}
+  introPages: []
+  outroPages: []
+  failPages: []
+  levelIntroBgm: {fileID: 8300000, guid: 3f7c1c3152df8ba459577665d44aa329, type: 3}
+  levelLoopBgm: {fileID: 8300000, guid: 392c3d72750d49a47b060df0e24a5f96, type: 3}

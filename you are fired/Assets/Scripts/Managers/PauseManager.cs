@@ -1,4 +1,3 @@
-using MyGame.Managers;
 using UnityEngine;
 
 // Pause manager that selects level-specific pause menu

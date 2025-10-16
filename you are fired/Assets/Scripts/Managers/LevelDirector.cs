@@ -263,10 +263,13 @@ public class LevelDirector : MonoBehaviour
         CurrentLevelIndex = idx;
         CurrentLevel = campaign[idx];
 
-        // 通知外部（暂停菜单不同皮肤、关卡名显示等都可以在这做）
-        OnLevelChanged?.Invoke(CurrentLevel, CurrentLevelIndex);
+        // —— 播放该关的BGM（Intro→Loop） ——
+        if (AudioManager.I != null && CurrentLevel != null)
+        {
+            AudioManager.I.PlayLevelBGM(CurrentLevel.levelIntroBgm, CurrentLevel.levelLoopBgm);
+        }
 
-        // 下一帧开始播开场
+        OnLevelChanged?.Invoke(CurrentLevel, CurrentLevelIndex);
         phase = Phase.LevelIntro;
     }
 
