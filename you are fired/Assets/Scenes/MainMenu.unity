@@ -364,9 +364,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92f0328d854c87240931351c136e86cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mixer: {fileID: 24100000, guid: 4b565278e9c8d3f43a17b529cd97e108, type: 2}
-  bgmSource: {fileID: 946232822}
-  sfxSource: {fileID: 0}
+  bgmVolume: 0.8
+  creditsBgm: {fileID: 8300000, guid: 5b074cef7b4a6634eb9004d9132e7383, type: 3}
+  creditsLoop: 1
+  menuLoopAfterCredits: {fileID: 8300000, guid: 19375b862529de34e97f33a19013b589, type: 3}
 --- !u!4 &130395802
 Transform:
   m_ObjectHideFlags: 0
@@ -631,7 +632,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -382, y: 304}
+  m_AnchoredPosition: {x: -125, y: 205}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &247085544
@@ -685,6 +686,30 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 130395801}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: EndCredits
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 130395801}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: PlayMenuLoop
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 19375b862529de34e97f33a19013b589, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2339,7 +2364,7 @@ MonoBehaviour:
   m_text: You Are fired
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0248e3c3da618d44c9e82135b25f14f3, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: -8581397020543066475, guid: 0248e3c3da618d44c9e82135b25f14f3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2538,6 +2563,30 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 130395801}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: StartCredits
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 946232822}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Stop
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3313,7 +3362,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: return
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0248e3c3da618d44c9e82135b25f14f3, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -3379,7 +3428,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1490320656
@@ -4165,7 +4214,7 @@ MonoBehaviour:
     Wang\nXing Su\n\nProject Management \nSanxing Wang\nXing Su"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0248e3c3da618d44c9e82135b25f14f3, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: -8581397020543066475, guid: 0248e3c3da618d44c9e82135b25f14f3, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
