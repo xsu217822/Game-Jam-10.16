@@ -9,8 +9,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string mainMenuScene = "MainMenu";
     [SerializeField] private string levelScene = "LevelScene";
 
-    [Header("Ö÷²Ëµ¥BGM£¨´¿Ñ­»·£©")]
-    [SerializeField] private AudioClip menuLoopBgm;
 
     public static GameManager I { get; private set; }
     public GameState State { get; private set; } = GameState.MainMenu;
@@ -24,8 +22,6 @@ public class GameManager : MonoBehaviour
         var cur = SceneManager.GetActiveScene().name;
         if (cur != mainMenuScene && cur != levelScene)
             LoadMainMenu();
-        else if (cur == mainMenuScene)
-            TryPlayMenuBgm();
     }
 
     public void LoadMainMenu()
@@ -33,7 +29,7 @@ public class GameManager : MonoBehaviour
         State = GameState.MainMenu;
         Time.timeScale = 1f;
         SceneManager.LoadScene(mainMenuScene);
-        // ³¡¾°¼ÓÔØÊÇÒì²½Íê³ÉµÄ£»±£ÏÕÆğ¼û£¬ÏÂÒ»Ö¡²¥BGM
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì²½ï¿½ï¿½ÉµÄ£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ö¡ï¿½ï¿½BGM
         Invoke(nameof(TryPlayMenuBgm), 0f);
     }
 
@@ -42,7 +38,6 @@ public class GameManager : MonoBehaviour
         State = GameState.Playing;
         Time.timeScale = 1f;
         SceneManager.LoadScene(levelScene);
-        // ¹Ø¿¨BGMÓÉ LevelDirector.OnLevelChanged ´¥·¢£¬²»ÔÚ´Ë´¦²¥·Å
     }
 
     public void RestartGame()
@@ -64,7 +59,10 @@ public class GameManager : MonoBehaviour
 
     private void TryPlayMenuBgm()
     {
-        if (AudioManager.I != null)
-            AudioManager.I.PlayMenuLoop(menuLoopBgm);
+        // AudioManager åœ¨ Start() ä¸­ä¼šè‡ªåŠ¨æ’­æ”¾èœå•éŸ³ä¹
+        if (AudioManager.I != null && AudioManager.I.IsInCredits)
+        {
+            AudioManager.I.EndCredits();
+        }
     }
 }
