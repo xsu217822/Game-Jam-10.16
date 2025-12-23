@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class cameraControl : MonoBehaviour
+public class CameraControl : MonoBehaviour
 {
     [SerializeField] private Transform player;
     [SerializeField] private Vector3 offset = new Vector3(0, 0, -10);
