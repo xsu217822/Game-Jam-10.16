@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] private int maxHp = 30;
     [SerializeField] private float speed = 2f;
     [SerializeField] private int expOnDie = 5;
+    [SerializeField] private float contactDamage = 10f;
 
     private int hp;
     private Transform target;
@@ -104,6 +105,23 @@ public class Enemy : MonoBehaviour, IDamageable
         if (hp <= 0)
         {
             Die();
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        var player = collision.collider.GetComponent<Player>();
+        if (player != null)
+        {
+            player.TakeDamage(contactDamage);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        var player = other.GetComponent<Player>();
+        if (player != null)
+        {
+            player.TakeDamage(contactDamage);
         }
     }
 

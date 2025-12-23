@@ -1,59 +1,21 @@
 using UnityEngine;
 
-public enum WeaponType
+public abstract class WeaponBase : MonoBehaviour
 {
-    Melee,
-    Ranged
-}
+    public float range = 1.5f;
+    public float baseDamage = 10f;
+    public float attackSpeed = 1f;
 
-/// <summary>
-/// WeaponBase for all weapon types (Melee and Ranged)  
-/// </summary>
-public class WeaponBase : MonoBehaviour
-{
-    [Header("Weapon Type")]
-    public WeaponType weaponType;
+    protected float lastAttackTime;
 
-    [Header("Weapon Stats")]
-    public float range = 1.5f;       // ¹¥»÷¾àÀë
-    public float baseDamage = 10f;   // »ù´¡ÉËº¦
-    public float attackSpeed = 1.0f; // ¹¥ËÙ
-
-    [Header("Components")]
-    public Animator animator;
-    public AudioSource audioSource;
-
-    /// <summary>
-    /// ¼ÓÉËº¦
-    /// </summary>
-    public void AddDamage(float amount)
+    public void Attack()
     {
-        baseDamage += amount;
-        Debug.Log($"[{name}] Damage increased by {amount}, now {baseDamage}");
+        if (Time.time < lastAttackTime + 1f / attackSpeed)
+            return;
+
+        lastAttackTime = Time.time;
+        PerformAttack();
     }
 
-    /// <summary>
-    /// ¼Ó¹¥ËÙ
-    /// </summary>
-    public void AddAttackSpeed(float amount)
-    {
-        attackSpeed += amount;
-        Debug.Log($"[{name}] Attack speed increased by {amount}, now {attackSpeed}");
-    }
-
-    /// <summary>
-    /// Æ½aÀäÈ´
-    /// </summary>
-    public float GetAttackInterval()
-    {
-        return 1f / attackSpeed;
-    }
-
-    /// <summary>
-    /// Melee and Ranged
-    /// </summary>
-    public virtual void Attack()
-    {
-        Debug.Log($"[{name}] performs {weaponType} attack!");
-    }
+    protected abstract void PerformAttack();
 }

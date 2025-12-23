@@ -1,57 +1,29 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Collider2D))]
 public class Bullet : MonoBehaviour
 {
-    [Header("Runtime")]
-    [SerializeField] private float lifeSeconds = 4f;
+    float damage;
+    Vector2 dir;
+    float speed;
 
-    private Rigidbody2D rb;
-    private float damage;
-    private GameObject owner;
-
-    private void Awake()
+    public void Init(float dmg, Vector2 direction, float spd)
     {
-        rb = GetComponent<Rigidbody2D>();
-        // Make sure collider is trigger for simple hit scan
-        var col = GetComponent<Collider2D>();
-        col.isTrigger = true;
+        damage = dmg;
+        dir = direction.normalized;
+        speed = spd;
+        Destroy(gameObject, 5f);
     }
 
-    private void OnEnable()
+    void Update()
     {
-        Destroy(gameObject, lifeSeconds);
+        transform.position += (Vector3)(dir * speed * Time.deltaTime);
     }
 
-    // Initialize bullet movement and damage
-    public void Init(Vector2 dir, float speed, float damage, GameObject owner)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        this.damage = damage;
-        this.owner = owner;
-        if (rb == null) rb = GetComponent<Rigidbody2D>();
-        rb.linearVelocity = dir.normalized * speed;
-        // Face movement direction (optional)
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        // Ignore hitting the shooter or its children
-        if (owner && other.transform.IsChildOf(owner.transform)) return;
-
-        // Only damage enemies
-        if (other.TryGetComponent<Enemy>(out var enemy))
+        if (other.TryGetComponent<IDamageable>(out var dmg))
         {
-            enemy.TakeDamage(damage);
-            Destroy(gameObject);
-            return;
-        }
-
-        // Optionally destroy on hitting walls/ground (non-trigger colliders)
-        if (!other.isTrigger)
-        {
+            dmg.TakeDamage(damage);
             Destroy(gameObject);
         }
     }

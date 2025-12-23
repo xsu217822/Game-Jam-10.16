@@ -26,40 +26,40 @@ public class Player : MonoBehaviour, IDamageable
     // 暴露百分比给血条 UI 使用
     public float HpPercent => MaxHP <= 0 ? 0f : (float)HP / MaxHP;
 
-    [Header("Weapon Prefabs")]
-    public GameObject keyboardPrefab;
-    public GameObject injectorPrefab;
-    public GameObject gunPrefab;
-    public GameObject bottlePrefab;
-    public GameObject cleaverPrefab;
-    public GameObject penPrefab;
-    public GameObject scalpelPrefab;
-    public GameObject swordPrefab;
+    //[Header("Weapon Prefabs")]
+    //public GameObject keyboardPrefab;
+    //public GameObject injectorPrefab;
+    //public GameObject gunPrefab;
+    //public GameObject bottlePrefab;
+    //public GameObject cleaverPrefab;
+    //public GameObject penPrefab;
+    //public GameObject scalpelPrefab;
+    //public GameObject swordPrefab;
 
-    private WeaponBase equippedWeapon;
-    private int weaponIndex = 0;
-    private GameObject[] weaponPrefabs;
+    //private WeaponBase equippedWeapon;
+    //private int weaponIndex = 0;
+    //private GameObject[] weaponPrefabs;
 
     private void Awake()
     {
         if (!rb) rb = GetComponent<Rigidbody2D>() ?? gameObject.AddComponent<Rigidbody2D>();
         rb.gravityScale = 0f;
 
-        // Store all weapon prefabs in an array for easy access
-        weaponPrefabs = new GameObject[]
-        {
-            keyboardPrefab,    // 0
-            injectorPrefab,    // 1
-            gunPrefab,         // 2
-            bottlePrefab,      // 3
-            cleaverPrefab,     // 4
-            penPrefab,         // 5
-            scalpelPrefab,     // 6
-            swordPrefab        // 7
-        };
+        //// Store all weapon prefabs in an array for easy access
+        //weaponPrefabs = new GameObject[]
+        //{
+        //    keyboardPrefab,    // 0
+        //    injectorPrefab,    // 1
+        //    gunPrefab,         // 2
+        //    bottlePrefab,      // 3
+        //    cleaverPrefab,     // 4
+        //    penPrefab,         // 5
+        //    scalpelPrefab,     // 6
+        //    swordPrefab        // 7
+        //};
 
-        // Equip the first weapon by default
-        EquipWeapon(weaponPrefabs[weaponIndex]);
+        //// Equip the first weapon by default
+        //EquipWeapon(weaponPrefabs[weaponIndex]);
     }
 
     public void ApplyBase(int hp, float speed)
@@ -79,13 +79,13 @@ public class Player : MonoBehaviour, IDamageable
             rb.linearVelocity = Vector2.zero;
     }
 
-    public void OnAttack(InputValue value)
-    {
-        if (equippedWeapon != null)
-        {
-            equippedWeapon.Attack();
-        }
-    }
+    //public void OnAttack(InputValue value)
+    //{
+    //    if (equippedWeapon != null)
+    //    {
+    //        equippedWeapon.Attack();
+    //    }
+    //}
 
     public void TakeDamage(float amount)
     {
@@ -134,27 +134,27 @@ public class Player : MonoBehaviour, IDamageable
         Debug.Log($"玩家升级到 {Level} 级！");
     }
 
-    public void EquipWeapon(GameObject weaponPrefab)
-    {
-        if (equippedWeapon != null)
-            Destroy(equippedWeapon.gameObject);
+    //public void EquipWeapon(GameObject weaponPrefab)
+    //{
+    //    if (equippedWeapon != null)
+    //        Destroy(equippedWeapon.gameObject);
 
-        equippedWeapon = Instantiate(weaponPrefab, transform).GetComponent<WeaponBase>();
-        equippedWeapon.transform.localPosition = Vector3.zero;
-    }
+    //    equippedWeapon = Instantiate(weaponPrefab, transform).GetComponent<WeaponBase>();
+    //    equippedWeapon.transform.localPosition = Vector3.zero;
+    //}
 
-    // Example: Switch weapon by index (call this from input/UI)
-    public void SwitchWeapon(int index)
-    {
-        if (index < 0 || index >= weaponPrefabs.Length) return;
-        weaponIndex = index;
-        EquipWeapon(weaponPrefabs[weaponIndex]);
-    }
+    //// Example: Switch weapon by index (call this from input/UI)
+    //public void SwitchWeapon(int index)
+    //{
+    //    if (index < 0 || index >= weaponPrefabs.Length) return;
+    //    weaponIndex = index;
+    //    EquipWeapon(weaponPrefabs[weaponIndex]);
+    //}
 
     // Example: Cycle to next weapon (call this from input/UI)
-    public void NextWeapon()
-    {
-        weaponIndex = (weaponIndex + 1) % weaponPrefabs.Length;
-        EquipWeapon(weaponPrefabs[weaponIndex]);
-    }
+    //public void NextWeapon()
+    //{
+    //    weaponIndex = (weaponIndex + 1) % weaponPrefabs.Length;
+    //    EquipWeapon(weaponPrefabs[weaponIndex]);
+    //}
 }
