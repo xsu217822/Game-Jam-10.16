@@ -12,10 +12,11 @@ public class ResolutionSettings : MonoBehaviour
     public Slider volumeSlider;
 
     [Header("Audio Settings")]
-    public AudioMixer audioMixer;  // ÔÚ Unity Inspector ÀïÍÏÈë AudioMixer
+    public AudioMixer audioMixer;  // ï¿½ï¿½ Unity Inspector ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ AudioMixer
 
     private Resolution[] resolutions;
     private int currentResolutionIndex = 0;
+    private bool isInitialized = false;
 
     void Awake()
     {
@@ -24,7 +25,7 @@ public class ResolutionSettings : MonoBehaviour
 
     void Start()
     {
-        // --- ³õÊ¼»¯·Ö±æÂÊ ---
+        // --- ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ ---
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
 
@@ -42,30 +43,55 @@ public class ResolutionSettings : MonoBehaviour
         }
 
         resolutionDropdown.AddOptions(options);
+        
+        // --- ä» PlayerPrefs åŠ è½½ä¿å­˜çš„è®¾ç½® ---
+        if (PlayerPrefs.HasKey("resolutionIndex"))
+        {
+            int savedIndex = PlayerPrefs.GetInt("resolutionIndex");
+            if (savedIndex < resolutions.Length)
+            {
+                currentResolutionIndex = savedIndex;
+            }
+        }
+        
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
 
-        // --- ³õÊ¼»¯È«ÆÁ×´Ì¬ ---
-        fullscreenToggle.isOn = Screen.fullScreen;
+        // --- åˆå§‹åŒ–å…¨å±çŠ¶æ€ï¼ˆä» PlayerPrefs åŠ è½½ï¼‰---
+        bool savedFullscreen = PlayerPrefs.GetInt("fullscreen", 1) == 1;
+        fullscreenToggle.isOn = savedFullscreen;
 
-        // --- ³õÊ¼»¯ÒôÁ¿ ---
-        float savedVolume = PlayerPrefs.GetFloat("Volume", 0.75f);
+        // --- åˆå§‹åŒ–éŸ³é‡ ---
+        float savedVolume = PlayerPrefs.GetFloat("volume", 0.75f);
         volumeSlider.value = savedVolume;
         SetVolume(savedVolume);
 
-        // --- Ìí¼ÓÊÂ¼ş¼àÌı ---
+        // --- æ·»åŠ ç›‘å¬å™¨ï¼ˆåˆå§‹åŒ–å®Œæˆåï¼‰ ---
+        resolutionDropdown.onValueChanged.AddListener(delegate { ApplySettings(); });
+        fullscreenToggle.onValueChanged.AddListener(delegate { ApplySettings(); });
         volumeSlider.onValueChanged.AddListener(SetVolume);
+        
+        isInitialized = true;
+        
+        // --- åº”ç”¨ä¿å­˜çš„è®¾ç½® ---
+        ApplySettings();
     }
 
     public void ApplySettings()
     {
+        if (!isInitialized) return;
+        
         int selectedResolutionIndex = resolutionDropdown.value;
+        if (selectedResolutionIndex < 0 || selectedResolutionIndex >= resolutions.Length)
+            return;
+            
         Resolution selectedResolution = resolutions[selectedResolutionIndex];
         bool isFullscreen = fullscreenToggle.isOn;
 
+        Debug.Log($"Applying resolution: {selectedResolution.width} x {selectedResolution.height}, Fullscreen: {isFullscreen}");
         Screen.SetResolution(selectedResolution.width, selectedResolution.height, isFullscreen);
 
-        // ±£´æÉèÖÃ
+        // ä¿å­˜è®¾ç½®
         PlayerPrefs.SetInt("resolutionIndex", selectedResolutionIndex);
         PlayerPrefs.SetInt("fullscreen", isFullscreen ? 1 : 0);
         PlayerPrefs.Save();
@@ -73,25 +99,12 @@ public class ResolutionSettings : MonoBehaviour
 
     public void SetVolume(float value)
     {
-        // ½«»¬ÌõÖµ£¨0~1£©×ª»»Îª·Ö±´ (-80 ~ 20dB)
-        float volumeInDb = Mathf.Lerp(-80f, 20f, Mathf.Clamp01(value));
+        // å°†æ»‘å—å€¼ 0~1 è½¬æ¢ä¸ºåˆ†è´ (-40 ~ 0dBï¼Œæ›´åˆç†çš„å¬æ„ŸèŒƒå›´)
+        float clampedValue = Mathf.Clamp01(value);
+        float volumeInDb = Mathf.Lerp(-40f, 0f, clampedValue);
         audioMixer.SetFloat("MasterVolume", volumeInDb);
-        PlayerPrefs.SetFloat("volume", value);
+        PlayerPrefs.SetFloat("volume", clampedValue);
     }
 
-    void OnEnable()
-    {
-        // ¶ÁÈ¡·Ö±æÂÊ & È«ÆÁ
-        if (PlayerPrefs.HasKey("resolutionIndex"))
-        {
-            int savedIndex = PlayerPrefs.GetInt("resolutionIndex");
-            if (savedIndex < resolutionDropdown.options.Count)
-            {
-                resolutionDropdown.value = savedIndex;
-                resolutionDropdown.RefreshShownValue();
-            }
-        }
-
-        fullscreenToggle.isOn = PlayerPrefs.GetInt("fullscreen", 1) == 1;
-    }
+    // OnEnable å·²ç§»é™¤ä»¥é¿å…ä¸ Start å†²çª
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
@@ -34,10 +35,22 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void SetVolume(float volume)
     {
+        bgmVolume = Mathf.Clamp01(volume);
         if (srcA) srcA.volume = bgmVolume;
         if (srcB) srcB.volume = bgmVolume;
+    }
+
+    // Optional: call this from your UI setup to sync the slider's initial value
+    public void InitializeVolumeSlider(Slider slider)
+    {
+        if (!slider) return;
+        slider.minValue = 0f;
+        slider.maxValue = 1f;
+        slider.wholeNumbers = false;
+        slider.SetValueWithoutNotify(bgmVolume);
+        slider.onValueChanged.AddListener(SetVolume); // uses the dynamic float
     }
 
     public void PlayMenuLoop(AudioClip loopClip)
@@ -88,13 +101,12 @@ public class AudioManager : MonoBehaviour
         srcA.UnPause(); srcB.UnPause(); isPaused = false;
     }
 
-    // Credits control with menu pause/resume
     public void StartCredits()
     {
         if (inCredits) return;
         inCredits = true;
 
-        GameManager.I?.Pause(true);       // pause main menu
+        GameManager.I?.Pause(true);
         if (!creditsBgm) { StopBGM(); return; }
 
         double dsp = AudioSettings.dspTime;
@@ -109,7 +121,7 @@ public class AudioManager : MonoBehaviour
         if (!inCredits) return;
         inCredits = false;
 
-        GameManager.I?.Pause(false);      // resume main menu
+        GameManager.I?.Pause(false);
         if (menuLoopAfterCredits)
             PlayMenuLoop(menuLoopAfterCredits);
         else
