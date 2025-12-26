@@ -2,19 +2,36 @@ using UnityEngine;
 
 public class Sword : WeaponBase
 {
-    protected override void PerformAttack()
+    public Animator animator;
+
+    private Enemy cachedTarget;
+
+    protected override void PerformAttack(Enemy target)
     {
-        Collider2D[] hits = Physics2D.OverlapCircleAll(
+        if (!target) return;
+
+        cachedTarget = target;
+
+        animator.SetTrigger("Attack");
+    }
+
+    // ¶¯»­Ö¡
+    public void DoHit()
+    {
+        if (!cachedTarget) return;
+
+        float dist = Vector2.Distance(
             transform.position,
-            range
+            cachedTarget.transform.position
         );
 
-        foreach (var hit in hits)
+        if (dist > range) return;
+
+        IDamageable dmg = cachedTarget.GetComponent<IDamageable>();
+        if (dmg != null && !dmg.IsDead)
         {
-            if (hit.TryGetComponent<IDamageable>(out var dmg))
-            {
-                dmg.TakeDamage(baseDamage);
-            }
+            dmg.TakeDamage(baseDamage);
+            Debug.Log("Sword Hit!");
         }
     }
 }

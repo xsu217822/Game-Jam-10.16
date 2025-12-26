@@ -6,7 +6,7 @@ public class Gun : WeaponBase
     public Transform firePoint;
     public float bulletSpeed = 10f;
 
-    protected override void PerformAttack()
+    protected override void PerformAttack(Enemy target)
     {
         Debug.Log("Gun Attack Fired");
 
