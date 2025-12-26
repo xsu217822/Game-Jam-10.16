@@ -25,7 +25,7 @@ public class PlayerCombatController : MonoBehaviour
 
         if (currentTarget)
         {
-            currentWeapon.Attack();
+            currentWeapon.Attack(currentTarget);
         }
     }
 

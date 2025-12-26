@@ -8,14 +8,14 @@ public abstract class WeaponBase : MonoBehaviour
 
     protected float lastAttackTime;
 
-    public void Attack()
+    public void Attack(Enemy target)
     {
         if (Time.time < lastAttackTime + 1f / attackSpeed)
             return;
 
         lastAttackTime = Time.time;
-        PerformAttack();
+        PerformAttack(target);
     }
 
-    protected abstract void PerformAttack();
+    protected abstract void PerformAttack(Enemy target);
 }
