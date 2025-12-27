@@ -31,7 +31,7 @@ public class Sword : WeaponBase
         if (dmg != null && !dmg.IsDead)
         {
             dmg.TakeDamage(baseDamage);
-            Debug.Log("Sword Hit!");
+            Debug.Log("Sword Hit");
         }
     }
 }
