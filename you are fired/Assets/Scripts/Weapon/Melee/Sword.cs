@@ -2,9 +2,14 @@ using UnityEngine;
 
 public class Sword : WeaponBase
 {
-    public Animator animator;
 
     private Enemy cachedTarget;
+    private Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponentInParent<Animator>();
+    }
 
     protected override void PerformAttack(Enemy target)
     {
