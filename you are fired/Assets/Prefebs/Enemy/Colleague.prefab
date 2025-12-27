@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8745592265195483505}
   - component: {fileID: 3814956872781321982}
   - component: {fileID: -6582807735827501332}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Colleague
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,6 +128,7 @@ MonoBehaviour:
   maxHp: 30
   speed: 2
   expOnDie: 5
+  contactDamage: 10
   animator: {fileID: 0}
   faceToMove: 1
   stopDistance: 2

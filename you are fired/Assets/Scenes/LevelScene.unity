@@ -1160,7 +1160,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1624608781}
+  - {fileID: 1542459139}
   m_Father: {fileID: 1840586866}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1152212748
@@ -1543,12 +1543,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1542459137}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.1387, y: -0.0057, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1100224160}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1542459140
 MonoBehaviour:
@@ -1562,10 +1562,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 685b75296d19df54d9071bf542e8bf6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 1.5
+  range: 0.2
   baseDamage: 10
   attackSpeed: 1
-  animator: {fileID: 0}
+  attackRadius: 1.5
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  slashFxPrefab: {fileID: 0}
 --- !u!1 &1570953823
 GameObject:
   m_ObjectHideFlags: 0
@@ -1772,54 +1776,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1614653372}
   m_CullTransparentMesh: 1
---- !u!1 &1624608780
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1624608781}
-  - component: {fileID: 1624608782}
-  m_Layer: 0
-  m_Name: Sword
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1624608781
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1624608780}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1100224160}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1624608782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1624608780}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 685b75296d19df54d9071bf542e8bf6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 1.5
-  baseDamage: 10
-  attackSpeed: 1
-  animator: {fileID: 0}
 --- !u!1 &1660864743
 GameObject:
   m_ObjectHideFlags: 0
@@ -2603,9 +2559,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 926784426375175805, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
       insertIndex: -1
       addedObject: {fileID: 358925115621638262}
-    - targetCorrespondingSourceObject: {fileID: 926784426375175805, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 358925115621638263}
     - targetCorrespondingSourceObject: {fileID: 8375562910558495178, guid: 9dcd2eaf7b4ebb8438b18812211d4f09, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1020871476}
@@ -2706,27 +2659,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a785470794a32543ac43e93739e26d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWeapon: {fileID: 378152369}
+  currentWeapon: {fileID: 1542459140}
   aimPivot: {fileID: 1267996891}
   firePoint: {fileID: 217375671}
   targetRange: 8
   targetRefreshRate: 0.1
---- !u!114 &358925115621638263
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 358925115621638248}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 685b75296d19df54d9071bf542e8bf6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 1.5
-  baseDamage: 10
-  attackSpeed: 1
-  animator: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -2735,4 +2672,3 @@ SceneRoots:
   - {fileID: 684738620}
   - {fileID: 96127472}
   - {fileID: 1614495673}
-  - {fileID: 1542459139}
