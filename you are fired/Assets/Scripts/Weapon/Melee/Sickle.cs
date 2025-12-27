@@ -1,14 +1,11 @@
 using UnityEngine;
 
-public class Sword : WeaponBase
+public class Sickle : WeaponBase
 {
-    public float radius = 1.1f;
-    public float angle = 90f;
+    [Header("Fan Attack")]
+    public float radius = 2f;          // 攻击距离
+    public float angle = 120f;         // 扇形总角度
     public LayerMask enemyLayer;
-
-    [Header("Visual FX")]
-    public GameObject slashFxPrefab;
-    public float fxLifeTime = 0.15f;
 
     protected override void PerformAttack(Enemy target)
     {
@@ -26,33 +23,21 @@ public class Sword : WeaponBase
             Vector2 toEnemy =
                 ((Vector2)hit.transform.position - center).normalized;
 
-            if (Vector2.Angle(dir, toEnemy) > angle * 0.5f)
+            float enemyAngle = Vector2.Angle(dir, toEnemy);
+
+            // 不在扇形角度内
+            if (enemyAngle > angle * 0.5f)
                 continue;
 
             hit.GetComponent<IDamageable>()
                ?.TakeDamage(baseDamage);
-        }
-
-        // Slash FX
-        if (slashFxPrefab && target)
-        {
-            float fxAngle =
-                Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-
-            GameObject fx = Instantiate(
-                slashFxPrefab,
-                transform.position,
-                Quaternion.Euler(0, 0, fxAngle)
-            );
-
-            Destroy(fx, fxLifeTime);
         }
     }
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.white;
+        Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, radius);
     }
 #endif

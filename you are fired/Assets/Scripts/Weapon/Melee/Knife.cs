@@ -1,14 +1,10 @@
 using UnityEngine;
 
-public class Sword : WeaponBase
+public class Knife : WeaponBase
 {
-    public float radius = 1.1f;
-    public float angle = 90f;
+    public float radius = 0.6f;
+    public float angle = 40f;
     public LayerMask enemyLayer;
-
-    [Header("Visual FX")]
-    public GameObject slashFxPrefab;
-    public float fxLifeTime = 0.15f;
 
     protected override void PerformAttack(Enemy target)
     {
@@ -32,27 +28,12 @@ public class Sword : WeaponBase
             hit.GetComponent<IDamageable>()
                ?.TakeDamage(baseDamage);
         }
-
-        // Slash FX
-        if (slashFxPrefab && target)
-        {
-            float fxAngle =
-                Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-
-            GameObject fx = Instantiate(
-                slashFxPrefab,
-                transform.position,
-                Quaternion.Euler(0, 0, fxAngle)
-            );
-
-            Destroy(fx, fxLifeTime);
-        }
     }
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.white;
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, radius);
     }
 #endif
