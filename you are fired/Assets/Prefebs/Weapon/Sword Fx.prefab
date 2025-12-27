@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5819156663850666123}
   - component: {fileID: 5407853186201423521}
   m_Layer: 0
-  m_Name: SlashFX
+  m_Name: Sword Fx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
