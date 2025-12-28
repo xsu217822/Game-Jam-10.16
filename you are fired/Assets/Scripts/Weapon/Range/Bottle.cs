@@ -1,16 +1,22 @@
 using UnityEngine;
 
-public class Bottle : MonoBehaviour
+public class Bottle : WeaponBase
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public GameObject bottlePrefab;
+    public Transform firePoint;
+    public float throwSpeed = 8f;
 
-    // Update is called once per frame
-    void Update()
+    protected override void PerformAttack(Enemy target)
     {
-        
+        Vector2 dir = firePoint.right;
+
+        var go = Instantiate(
+            bottlePrefab,
+            firePoint.position,
+            Quaternion.identity
+        );
+
+        go.GetComponent<BottleProjectile>()
+          .Init(baseDamage, dir, throwSpeed);
     }
 }
