@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Bottle : WeaponBase
 {
-    public GameObject bottlePrefab;
+    public GameObject bottleProjectilePrefab;
     public Transform firePoint;
     public float throwSpeed = 8f;
 
@@ -11,7 +11,7 @@ public class Bottle : WeaponBase
         Vector2 dir = firePoint.right;
 
         var go = Instantiate(
-            bottlePrefab,
+            bottleProjectilePrefab,
             firePoint.position,
             Quaternion.identity
         );

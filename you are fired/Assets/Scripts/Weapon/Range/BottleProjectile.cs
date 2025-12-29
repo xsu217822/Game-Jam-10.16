@@ -4,6 +4,7 @@ public class BottleProjectile : MonoBehaviour
 {
     public float explosionRadius = 1.5f;
     public LayerMask enemyLayer;
+    public GameObject explosionFxPrefab;
 
     private float damage;
     private Vector2 velocity;
@@ -21,8 +22,12 @@ public class BottleProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Explode();
+        if (((1 << other.gameObject.layer) & enemyLayer) != 0)
+        {
+            Explode();
+        }
     }
+
 
     private void Explode()
     {
@@ -38,14 +43,16 @@ public class BottleProjectile : MonoBehaviour
                ?.TakeDamage(damage);
         }
 
+        // explosion
+        if (explosionFxPrefab)
+        {
+            Instantiate(
+                explosionFxPrefab,
+                transform.position,
+                Quaternion.identity
+            );
+        }
+
         Destroy(gameObject);
     }
-
-#if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, explosionRadius);
-    }
-#endif
 }
