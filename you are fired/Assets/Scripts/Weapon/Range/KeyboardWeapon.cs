@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Keyboard : WeaponBase
+public class KeyboardWeapon : WeaponBase
 {
     [Header("Projectile")]
     public GameObject bulletPrefab;
@@ -8,11 +8,13 @@ public class Keyboard : WeaponBase
     public float bulletSpeed = 12f;
 
     [Header("Keyboard Settings")]
-    public int lettersPerShot = 3; 
-    public float spreadAngle = 15f; // É¢µ¯
+    public int lettersPerShot = 3;
+    public float spreadAngle = 15f;    // É¢µ¯
 
     protected override void PerformAttack(Enemy target)
     {
+        if (target == null) return;
+
         Vector2 baseDir = firePoint.right;
 
         for (int i = 0; i < lettersPerShot; i++)
@@ -21,14 +23,19 @@ public class Keyboard : WeaponBase
             Vector2 dir =
                 Quaternion.Euler(0, 0, angleOffset) * baseDir;
 
-            var go = Instantiate(
+            GameObject go = Instantiate(
                 bulletPrefab,
                 firePoint.position,
                 Quaternion.identity
             );
 
-            go.GetComponent<KeyboardBullet>()
-              .Init(baseDamage, dir, bulletSpeed);
+            KeyboardBullet bullet =
+                go.GetComponent<KeyboardBullet>();
+
+            if (bullet != null)
+            {
+                bullet.Init(baseDamage, dir, bulletSpeed);
+            }
         }
     }
 }
