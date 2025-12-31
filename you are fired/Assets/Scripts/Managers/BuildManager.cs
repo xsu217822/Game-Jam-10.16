@@ -94,10 +94,12 @@ public class BuildManager : MonoBehaviour, IBuildService
         if (microOpen) return;
 
         var th = cfg.xpThresholds;
-        if (th != null && thresholdIdx < th.Length && xpAccum >= th[thresholdIdx])
+        while (th != null && thresholdIdx < th.Length && xpAccum >= th[thresholdIdx])
         {
+            xpAccum -= th[thresholdIdx];
             thresholdIdx++;
-            StartCoroutine(DoMicroBuild(cfg, player)); // 仅作用 currentLevelEquips
+            StartCoroutine(DoMicroBuild(cfg, player));
+            break; // 一次只开一个
         }
     }
 

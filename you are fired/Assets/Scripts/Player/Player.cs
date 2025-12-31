@@ -22,6 +22,7 @@ public class Player : MonoBehaviour, IDamageable
     // 经验 & 等级
     public int Exp { get; private set; } = 0;
     public int Level { get; private set; } = 1;
+    [SerializeField] private int baseExpToLevel = 100;
 
     // 暴露百分比给血条 UI 使用
     public float HpPercent => MaxHP <= 0 ? 0f : (float)HP / MaxHP;
@@ -118,20 +119,26 @@ public class Player : MonoBehaviour, IDamageable
 
     // 经验系统
     public void AddExp(int amount)
-    {       
-        Exp += Mathf.Max(0, amount);
-        while (Exp >= Level * 100) Exp -= Level * 100;
+    {
+        if (amount <= 0) return;
+
+        Exp += amount;
+        Debug.Log($"[EXP] +{amount} ({Exp}/{ExpToNextLevel})");
+
+        while (Exp >= ExpToNextLevel)
         {
-            // 100 经验升级     
-            Exp -= Level * 100;
+            Exp -= ExpToNextLevel;
             LevelUp();
         }
     }
+    private int ExpToNextLevel => Level * baseExpToLevel;
 
     private void LevelUp()
     {
         Level++;
-        Debug.Log($"玩家升级到 {Level} 级！");
+        Debug.Log($"[LEVEL UP] 玩家升级到 Lv.{Level}");
+
+        // TODO（下一步）：暂停游戏 + 弹构筑选择
     }
 
     //public void EquipWeapon(GameObject weaponPrefab)
