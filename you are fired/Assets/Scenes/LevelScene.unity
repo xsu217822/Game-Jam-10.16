@@ -2722,6 +2722,7 @@ MonoBehaviour:
   HP: 100
   hitInvincibleSeconds: 0.15
   MoveSpeed: 5
+  baseExpToLevel: 100
 --- !u!50 &358925115621638250
 Rigidbody2D:
   serializedVersion: 5
@@ -2796,7 +2797,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a785470794a32543ac43e93739e26d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWeapon: {fileID: 880042937}
+  currentWeapon: {fileID: 1391308486}
   aimPivot: {fileID: 1267996891}
   firePoint: {fileID: 217375671}
   targetRange: 8
