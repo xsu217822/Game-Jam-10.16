@@ -2,31 +2,40 @@ using UnityEngine;
 
 public class Knife : WeaponBase
 {
-    public float radius = 0.6f;
-    public float angle = 40f;
+    public float range = 0.8f;
+    public float spreadAngle = 40f; // 总角度
     public LayerMask enemyLayer;
 
     protected override void PerformAttack(Enemy target)
     {
-        Vector2 center = (Vector2)transform.position;
-        Vector2 dir = ((Vector2)target.transform.position - center).normalized;
+        Vector2 center = transform.position;
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(
-            center,
-            radius,
-            enemyLayer
-        );
+        // 用玩家朝向（或 target 方向）
+        Vector2 forward = target != null
+            ? ((Vector2)target.transform.position - center).normalized
+            : Vector2.right;
 
-        foreach (var hit in hits)
+        int count = 5;
+        float step = spreadAngle / (count - 1);
+        float start = -spreadAngle * 0.5f;
+
+        for (int i = 0; i < count; i++)
         {
-            Vector2 toEnemy =
-                ((Vector2)hit.transform.position - center).normalized;
+            float angle = start + step * i;
+            Vector2 dir = Quaternion.Euler(0, 0, angle) * forward;
 
-            if (Vector2.Angle(dir, toEnemy) > angle * 0.5f)
-                continue;
+            RaycastHit2D hit = Physics2D.Raycast(
+                center,
+                dir,
+                range,
+                enemyLayer
+            );
 
-            hit.GetComponent<IDamageable>()
-               ?.TakeDamage(baseDamage);
+            if (hit.collider != null)
+            {
+                hit.collider.GetComponent<IDamageable>()
+                   ?.TakeDamage(baseDamage);
+            }
         }
     }
 
@@ -34,7 +43,7 @@ public class Knife : WeaponBase
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, radius);
+        Gizmos.DrawWireSphere(transform.position, range);
     }
 #endif
 }
