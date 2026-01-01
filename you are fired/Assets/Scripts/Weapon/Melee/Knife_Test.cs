@@ -1,9 +1,8 @@
 using UnityEngine;
 
-public class KnifeBlade : MonoBehaviour
+public class Knife : WeaponBase
 {
-    [Header("Damage")]
-    public float damage = 2f;
+    [Header("Attack")]
     public float hitRadius = 0.25f;
     public LayerMask enemyLayer;
 
@@ -12,8 +11,8 @@ public class KnifeBlade : MonoBehaviour
     public float stabSpeed = 40f;
 
     [Header("Homing")]
-    public float homingStrength = 8f;  
-    public float homingRadius = 2.5f; 
+    public float homingRadius = 3f;
+    public float homingStrength = 10f;
 
     private Vector3 baseLocalPos;
     private float stabTimer;
@@ -26,6 +25,7 @@ public class KnifeBlade : MonoBehaviour
 
     void Update()
     {
+        // 找最近敌人（轻量）
         Enemy nearest = FindNearestEnemy();
         if (nearest != null)
         {
@@ -39,14 +39,19 @@ public class KnifeBlade : MonoBehaviour
             );
         }
 
+        // 朝向敌人
         float z = Mathf.Atan2(currentDir.y, currentDir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, z);
 
+        // 前后抖动
         stabTimer += Time.deltaTime * stabSpeed;
         float offset = Mathf.Sin(stabTimer) * stabDistance;
         transform.localPosition = baseLocalPos + (Vector3)(currentDir * offset);
+    }
 
-
+    protected override void PerformAttack(Enemy target)
+    {
+        // 高频、单刀近战
         Collider2D[] hits = Physics2D.OverlapCircleAll(
             transform.position,
             hitRadius,
@@ -56,7 +61,7 @@ public class KnifeBlade : MonoBehaviour
         foreach (var hit in hits)
         {
             hit.GetComponent<IDamageable>()
-               ?.TakeDamage(damage);
+               ?.TakeDamage(baseDamage);
         }
     }
 
