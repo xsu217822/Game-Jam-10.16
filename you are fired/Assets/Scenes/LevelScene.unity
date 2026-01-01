@@ -711,6 +711,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Knife
       objectReference: {fileID: 0}
+    - target: {fileID: 2246573323755871422, guid: 7ff24c53a722aef489269f6f0ace4a68, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2201,6 +2205,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sickle
       objectReference: {fileID: 0}
+    - target: {fileID: 7357006581624149045, guid: baaee82c6959e3044979e9e1071568bc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2902,7 +2910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a785470794a32543ac43e93739e26d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWeapon: {fileID: 1987210542}
+  currentWeapon: {fileID: 1391308486}
   aimPivot: {fileID: 1267996891}
   firePoint: {fileID: 217375671}
   targetRange: 8
